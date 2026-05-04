@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python OOP & File Handling – Complete Teaching Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════════ */
+:root{
+  --bg:#f0f4ff;
+  --surface:#ffffff;
+  --surface2:#f8faff;
+  --navy:#0f172a;
+  --navy2:#1e293b;
+  --blue:#2563eb;
+  --indigo:#4f46e5;
+  --violet:#7c3aed;
+  --teal:#0891b2;
+  --green:#059669;
+  --amber:#d97706;
+  --red:#dc2626;
+  --pink:#db2777;
+  --text:#1e293b;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --code-bg:#0f172a;
+  --tag-bg:#ede9fe;
+  --tag-txt:#5b21b6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Nunito',sans-serif;font-size:16px;line-height:1.7}
+
+/* ═══════════════════════════════════════════
+   SIDEBAR NAV
+═══════════════════════════════════════════ */
+.layout{display:flex;min-height:100vh}
+
+.sidebar{
+  width:270px;flex-shrink:0;
+  background:var(--navy);
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  padding:0 0 40px;
+}
+.sidebar::-webkit-scrollbar{width:4px}
+.sidebar::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
+
+.sidebar-logo{
+  padding:24px 20px 20px;
+  border-bottom:1px solid #1e293b;
+}
+.sidebar-logo .py-badge{
+  background:var(--blue);color:#fff;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;letter-spacing:.08em;
+  padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:8px;
+}
+.sidebar-logo h2{color:#fff;font-size:1rem;font-weight:800;line-height:1.3}
+.sidebar-logo p{color:#64748b;font-size:.75rem;margin-top:4px}
+
+.nav-section{padding:16px 20px 4px;color:#475569;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+
+.sidebar a{
+  display:block;padding:8px 20px;
+  color:#94a3b8;font-size:.82rem;font-weight:600;
+  text-decoration:none;border-left:3px solid transparent;
+  transition:all .15s;
+}
+.sidebar a:hover{color:#fff;background:rgba(255,255,255,.05);border-left-color:var(--blue)}
+.sidebar a.active{color:#fff;border-left-color:var(--blue);background:rgba(37,99,235,.15)}
+.sidebar a span{font-size:.7rem;color:#475569;margin-left:4px}
+
+/* ═══════════════════════════════════════════
+   MAIN CONTENT
+═══════════════════════════════════════════ */
+.main{flex:1;min-width:0;padding:0 40px 80px;max-width:900px}
+
+/* ═══════════════════════════════════════════
+   HERO BANNER
+═══════════════════════════════════════════ */
+.hero{
+  background:linear-gradient(135deg,var(--navy) 0%,#1e1b4b 50%,#0c1445 100%);
+  padding:60px 40px 50px;margin:0 -40px 0;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(79,70,229,.35),transparent 70%);
+}
+.hero::after{
+  content:'';position:absolute;bottom:-80px;left:40%;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.25),transparent 70%);
+}
+.hero-tag{
+  display:inline-block;background:rgba(79,70,229,.3);border:1px solid rgba(79,70,229,.6);
+  color:#a5b4fc;font-family:'JetBrains Mono',monospace;font-size:.7rem;
+  padding:4px 14px;border-radius:20px;margin-bottom:16px;letter-spacing:.06em;
+}
+.hero h1{color:#fff;font-size:clamp(1.8rem,4vw,3rem);font-weight:900;line-height:1.15;position:relative;z-index:1}
+.hero h1 em{font-style:normal;color:#818cf8}
+.hero-sub{color:#94a3b8;margin-top:14px;max-width:580px;font-size:.95rem;position:relative;z-index:1}
+.hero-meta{display:flex;gap:24px;margin-top:28px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-stat{text-align:center}
+.hero-stat .num{display:block;color:#fff;font-size:1.5rem;font-weight:900}
+.hero-stat .lbl{color:#64748b;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+
+/* ═══════════════════════════════════════════
+   CHAPTER HEADERS
+═══════════════════════════════════════════ */
+.chapter-header{
+  margin:60px 0 32px;
+  padding:28px 32px;
+  background:linear-gradient(135deg,var(--indigo),var(--violet));
+  border-radius:12px;color:#fff;
+}
+.chapter-header.ch2{background:linear-gradient(135deg,var(--teal),#0369a1)}
+.chapter-num{font-family:'JetBrains Mono',monospace;font-size:.7rem;opacity:.7;letter-spacing:.1em;margin-bottom:6px}
+.chapter-header h2{font-size:1.6rem;font-weight:900}
+.chapter-header p{opacity:.85;margin-top:6px;font-size:.9rem}
+
+/* ═══════════════════════════════════════════
+   TOPIC SECTION
+═══════════════════════════════════════════ */
+.topic{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;margin-bottom:36px;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.topic-head{
+  padding:22px 28px;border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:16px;
+}
+.topic-icon{
+  width:48px;height:48px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;flex-shrink:0;
+}
+.topic-icon.blue{background:#dbeafe}
+.topic-icon.indigo{background:#e0e7ff}
+.topic-icon.violet{background:#ede9fe}
+.topic-icon.teal{background:#ccfbf1}
+.topic-icon.amber{background:#fef3c7}
+.topic-icon.rose{background:#ffe4e6}
+.topic-icon.green{background:#d1fae5}
+.topic-icon.sky{background:#e0f2fe}
+
+.topic-head-text .topic-num{
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  color:var(--muted);letter-spacing:.08em;margin-bottom:3px;
+}
+.topic-head-text h3{font-size:1.2rem;font-weight:800;color:var(--navy)}
+.topic-head-text .topic-desc{color:var(--muted);font-size:.88rem;margin-top:4px}
+
+.topic-body{padding:28px}
+
+/* ═══════════════════════════════════════════
+   DEFINITION BOX
+═══════════════════════════════════════════ */
+.def-box{
+  background:var(--surface2);border-left:4px solid var(--indigo);
+  border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:22px;
+}
+.def-box .def-label{
+  font-family:'JetBrains Mono',monospace;font-size:.65rem;
+  color:var(--indigo);letter-spacing:.1em;margin-bottom:6px;font-weight:600;
+}
+.def-box p{color:var(--text);font-size:.9rem;line-height:1.7}
+.def-box.teal-border{border-left-color:var(--teal)}
+.def-box.amber-border{border-left-color:var(--amber)}
+.def-box.green-border{border-left-color:var(--green)}
+.def-box.rose-border{border-left-color:var(--red)}
+
+/* ═══════════════════════════════════════════
+   REAL WORLD ANALOGY BOX
+═══════════════════════════════════════════ */
+.analogy{
+  background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;
+  padding:14px 18px;margin-bottom:20px;display:flex;gap:12px;align-items:flex-start;
+}
+.analogy .icon{font-size:1.3rem;flex-shrink:0;margin-top:2px}
+.analogy-text .label{font-size:.7rem;font-weight:700;color:var(--amber);letter-spacing:.08em;margin-bottom:3px}
+.analogy-text p{font-size:.88rem;color:#92400e}
+
+/* ═══════════════════════════════════════════
+   TERM PILLS
+═══════════════════════════════════════════ */
+.terms-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:22px}
+.term-card{
+  background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:12px 14px;
+}
+.term-card .term{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  color:var(--indigo);font-weight:600;margin-bottom:4px;
+}
+.term-card .meaning{font-size:.82rem;color:var(--text);line-height:1.5}
+.term-card.highlight{border-color:#c7d2fe;background:#eef2ff}
+
+/* ═══════════════════════════════════════════
+   SYNTAX HIGHLIGHT LABEL
+═══════════════════════════════════════════ */
+.sub-label{
+  font-family:'JetBrains Mono',monospace;font-size:.72rem;
+  color:var(--blue);letter-spacing:.08em;margin:20px 0 10px;
+  display:flex;align-items:center;gap:8px;font-weight:600;
+}
+.sub-label::before{content:'▶';font-size:.6rem}
+
+/* ═══════════════════════════════════════════
+   CODE BLOCK
+═══════════════════════════════════════════ */
+.code-block{
+  background:var(--code-bg);border-radius:8px;overflow:hidden;margin-bottom:16px;
+  border:1px solid #1e293b;
+}
+.code-top{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px;background:#0a1628;border-bottom:1px solid #1e293b;
+}
+.dots{display:flex;gap:5px}
+.dot{width:11px;height:11px;border-radius:50%}
+.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.code-tag{
+  font-family:'JetBrains Mono',monospace;font-size:.62rem;
+  color:#475569;letter-spacing:.1em;text-transform:uppercase;
+  background:#1e293b;padding:2px 10px;border-radius:20px;
+}
+pre{
+  padding:20px;overflow-x:auto;font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;line-height:1.85;color:#cbd5e1;
+}
+
+/* syntax tokens */
+.kw{color:#f472b6}
+.fn{color:#93c5fd}
+.st{color:#86efac}
+.cm{color:#475569;font-style:italic}
+.nm{color:#fbbf24}
+.bi{color:#67e8f9}
+.op{color:#f9a8d4}
+.se{color:#fb923c}
+.deco{color:#a78bfa}
+.cls{color:#fde68a}
+
+/* ═══════════════════════════════════════════
+   OUTPUT BOX
+═══════════════════════════════════════════ */
+.output{
+  background:#001a0a;border:1px solid #14532d;border-radius:8px;
+  overflow:hidden;margin-bottom:20px;
+}
+.out-head{
+  background:rgba(5,150,105,.12);border-bottom:1px solid #14532d;
+  padding:7px 16px;font-family:'JetBrains Mono',monospace;
+  font-size:.62rem;color:#34d399;letter-spacing:.1em;
+}
+.out-body{
+  padding:14px 18px;font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;color:#4ade80;line-height:1.8;white-space:pre;
+}
+
+/* ═══════════════════════════════════════════
+   NOTES / IMPORTANT BOX
+═══════════════════════════════════════════ */
+.note-box{
+  background:#fefce8;border:1px solid #fde047;border-radius:8px;
+  padding:14px 18px;margin:16px 0;display:flex;gap:10px;
+}
+.note-box .ni{flex-shrink:0;font-size:1.1rem}
+.note-box p{font-size:.85rem;color:#713f12;line-height:1.6}
+.note-box strong{color:#92400e}
+
+.warn-box{
+  background:#fff1f2;border:1px solid #fda4af;border-radius:8px;
+  padding:14px 18px;margin:16px 0;display:flex;gap:10px;
+}
+.warn-box p{font-size:.85rem;color:#9f1239;line-height:1.6}
+
+.tip-box{
+  background:#f0fdf4;border:1px solid #86efac;border-radius:8px;
+  padding:14px 18px;margin:16px 0;display:flex;gap:10px;
+}
+.tip-box p{font-size:.85rem;color:#14532d;line-height:1.6}
+
+/* ═══════════════════════════════════════════
+   TABLE
+═══════════════════════════════════════════ */
+.ref-table{width:100%;border-collapse:collapse;margin:16px 0 22px;font-size:.85rem}
+.ref-table th{
+  background:var(--navy);color:#fff;padding:10px 16px;
+  text-align:left;font-size:.75rem;letter-spacing:.06em;
+}
+.ref-table td{padding:10px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+.ref-table tr:last-child td{border-bottom:none}
+.ref-table tr:nth-child(even) td{background:var(--surface2)}
+.ref-table td:first-child{
+  font-family:'JetBrains Mono',monospace;font-size:.76rem;
+  color:var(--indigo);font-weight:600;
+}
+
+/* ═══════════════════════════════════════════
+   TYPE DIAGRAM
+═══════════════════════════════════════════ */
+.diagram{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:8px;padding:20px;margin:16px 0 22px;
+  font-family:'JetBrains Mono',monospace;font-size:.78rem;
+  color:var(--text);line-height:1.9;
+}
+
+/* ═══════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════ */
+.divider{border:none;border-top:1px dashed var(--border);margin:24px 0}
+
+/* ═══════════════════════════════════════════
+   ACCESS MODIFIER CARDS
+═══════════════════════════════════════════ */
+.access-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.access-card{border-radius:8px;padding:14px;text-align:center;border:2px solid}
+.access-card.pub{background:#d1fae5;border-color:#34d399}
+.access-card.pro{background:#fef3c7;border-color:#fbbf24}
+.access-card.pri{background:#ffe4e6;border-color:#f87171}
+.access-card .ac-sym{font-family:'JetBrains Mono',monospace;font-size:1.1rem;font-weight:700;margin-bottom:6px}
+.access-card.pub .ac-sym{color:#059669}
+.access-card.pro .ac-sym{color:#d97706}
+.access-card.pri .ac-sym{color:#dc2626}
+.access-card .ac-name{font-size:.78rem;font-weight:700;margin-bottom:4px}
+.access-card .ac-desc{font-size:.72rem;color:var(--muted)}
+
+/* ═══════════════════════════════════════════
+   FILE MODE TABLE COLORS
+═══════════════════════════════════════════ */
+.mode-r{color:#2563eb;font-weight:700}
+.mode-w{color:#dc2626;font-weight:700}
+.mode-a{color:#059669;font-weight:700}
+.mode-x{color:#d97706;font-weight:700}
+.mode-b{color:#7c3aed;font-weight:700}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:900px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative}
+  .main{padding:0 20px 60px}
+  .hero{padding:40px 20px;margin:0 -20px 0}
+  .access-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .terms-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="py-badge">Python 3.x</div>
+    <h2>OOP & File Handling</h2>
+    <p>Complete Teaching Guide</p>
+  </div>
+
+  <div class="nav-section">Chapter 1 — OOP</div>
+  <a href="#intro">What is OOP?</a>
+  <a href="#classes">Classes &amp; Objects</a>
+  <a href="#init">__init__ Method</a>
+  <a href="#self">self Parameter</a>
+  <a href="#attributes">Attributes &amp; Methods</a>
+  <a href="#inheritance">Inheritance</a>
+  <a href="#types-inherit">Types of Inheritance</a>
+  <a href="#polymorphism">Polymorphism</a>
+  <a href="#encapsulation">Encapsulation</a>
+  <a href="#abstraction">Abstraction</a>
+  <a href="#special">Special Methods</a>
+  <a href="#classstatic">Class &amp; Static Methods</a>
+  <a href="#composition">Composition</a>
+  <a href="#inner">Inner Classes</a>
+
+  <div class="nav-section">Chapter 2 — File Handling</div>
+  <a href="#fh-intro">What is File Handling?</a>
+  <a href="#fh-modes">File Open Modes</a>
+  <a href="#fh-write">Writing Files</a>
+  <a href="#fh-read">Reading Files</a>
+  <a href="#fh-append">Append Mode</a>
+  <a href="#fh-seek">Seek &amp; Tell</a>
+  <a href="#fh-with">with Statement</a>
+  <a href="#fh-exception">Exception Handling</a>
+  <a href="#fh-binary">Binary Files</a>
+  <a href="#fh-csv">CSV Files</a>
+  <a href="#fh-json">JSON Files</a>
+  <a href="#fh-os">OS &amp; Pathlib</a>
+</nav>
+
+<!-- ══════════ MAIN ══════════ -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-tag">📘 Student Teaching Reference</div>
+    <h1>Python <em>Object-Oriented Programming</em><br>&amp; File Handling</h1>
+    <p class="hero-sub">Every concept explained from scratch — definitions, real-world analogies, new term explanations, and multiple code examples. Designed for classroom teaching.</p>
+    <div class="hero-meta">
+      <div class="hero-stat"><span class="num">14</span><span class="lbl">OOP Topics</span></div>
+      <div class="hero-stat"><span class="num">12</span><span class="lbl">File Topics</span></div>
+      <div class="hero-stat"><span class="num">40+</span><span class="lbl">Code Examples</span></div>
+      <div class="hero-stat"><span class="num">100+</span><span class="lbl">Term Definitions</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       CHAPTER 1: OOP
+  ════════════════════════════════ -->
+  <div class="chapter-header" id="intro">
+    <div class="chapter-num">CHAPTER 01</div>
+    <h2>Object-Oriented Programming (OOP)</h2>
+    <p>A programming paradigm that organises code around objects and classes instead of functions and logic.</p>
+  </div>
+
+  <!-- WHAT IS OOP -->
+  <div class="topic">
+    <div class="topic-head">
+      <div class="topic-icon blue">🏛️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.0</div>
+        <h3>What is OOP?</h3>
+        <div class="topic-desc">Understanding the programming paradigm that powers modern Python applications.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p><strong>Object-Oriented Programming (OOP)</strong> is a programming style (paradigm) where we organise code into <strong>objects</strong> that combine data (attributes) and behaviour (methods). Python is an object-oriented language — almost everything in Python is an object.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">🏠</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p>Think of a <strong>House Blueprint</strong>. The blueprint (class) defines how a house should look — number of rooms, windows, doors. Each actual house built from that blueprint is an <strong>object</strong>. Multiple houses can be built from one blueprint, each with different colours or furniture.</p>
+        </div>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">Paradigm</div><div class="meaning">A style or way of programming. OOP is one paradigm; others include Procedural and Functional.</div></div>
+        <div class="term-card highlight"><div class="term">Class</div><div class="meaning">A blueprint/template for creating objects. Defines structure and behaviour.</div></div>
+        <div class="term-card highlight"><div class="term">Object</div><div class="meaning">A real, usable instance created from a class. Has its own data.</div></div>
+        <div class="term-card highlight"><div class="term">Instance</div><div class="meaning">Another word for object. "Creating an instance" = making an object from a class.</div></div>
+        <div class="term-card highlight"><div class="term">Attribute</div><div class="meaning">A variable that belongs to a class or object (stores data).</div></div>
+        <div class="term-card highlight"><div class="term">Method</div><div class="meaning">A function defined inside a class (defines behaviour).</div></div>
+      </div>
+
+      <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px">The <strong>4 Pillars of OOP</strong> are: <strong>Encapsulation, Inheritance, Polymorphism, Abstraction</strong>. We will study each in detail.</p>
+
+      <div class="sub-label">Simple OOP vs Procedural comparison</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — OOP vs Procedural</span></div>
+<pre><span class="cm"># ── PROCEDURAL style (old way) ──</span>
+<span class="kw">def</span> <span class="fn">dog_bark</span>(name):
+    <span class="kw">return</span> <span class="st">f"</span><span class="se">{name}</span><span class="st"> says Woof!"</span>
+
+<span class="bi">print</span>(<span class="fn">dog_bark</span>(<span class="st">"Bruno"</span>))
+
+<span class="cm"># ── OOP style (modern way) ──</span>
+<span class="kw">class</span> <span class="cls">Dog</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name):   <span class="cm"># constructor</span>
+        <span class="se">self</span>.name <span class="op">=</span> name        <span class="cm"># attribute</span>
+
+    <span class="kw">def</span> <span class="fn">bark</span>(<span class="se">self</span>):              <span class="cm"># method</span>
+        <span class="kw">return</span> <span class="st">f"</span><span class="se">{self.name}</span><span class="st"> says Woof!"</span>
+
+d <span class="op">=</span> <span class="cls">Dog</span>(<span class="st">"Bruno"</span>)   <span class="cm"># create object</span>
+<span class="bi">print</span>(d.bark())</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Bruno says Woof!
+Bruno says Woof!</div></div>
+    </div>
+  </div>
+
+  <!-- CLASSES & OBJECTS -->
+  <div class="topic" id="classes">
+    <div class="topic-head">
+      <div class="topic-icon indigo">🏗️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.1</div>
+        <h3>Classes &amp; Objects</h3>
+        <div class="topic-desc">The core building blocks of OOP — creating blueprints and real instances from them.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION — CLASS</div>
+        <p>A <strong>class</strong> is a user-defined data type (blueprint) that bundles data (attributes) and functions (methods) together. Classes are created using the <code style="background:#e0e7ff;padding:1px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.85em">class</code> keyword.</p>
+      </div>
+      <div class="def-box teal-border">
+        <div class="def-label" style="color:var(--teal)">📖 DEFINITION — OBJECT</div>
+        <p>An <strong>object</strong> is a specific instance of a class. You create (instantiate) an object by calling the class like a function: <code style="background:#ccfbf1;padding:1px 6px;border-radius:3px;font-family:'JetBrains Mono',monospace;font-size:.85em">obj = ClassName()</code>. Each object has its own copy of the class attributes.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">🚗</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p><strong>Car</strong> is a class. <em>Your Maruti Swift</em> and <em>neighbour's Honda City</em> are objects. Both have the same structure (engine, wheels, seats) but different data (colour, model, year).</p>
+        </div>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">class keyword</div><div class="meaning">Used to define a class in Python.</div></div>
+        <div class="term-card"><div class="term">instantiation</div><div class="meaning">The process of creating an object from a class.</div></div>
+        <div class="term-card"><div class="term">class attribute</div><div class="meaning">Shared by ALL objects of the class.</div></div>
+        <div class="term-card"><div class="term">instance attribute</div><div class="meaning">Unique to each individual object.</div></div>
+        <div class="term-card"><div class="term">dot notation</div><div class="meaning">obj.attribute or obj.method() — how you access class members.</div></div>
+        <div class="term-card"><div class="term">pass</div><div class="meaning">Placeholder to create an empty class body without error.</div></div>
+      </div>
+
+      <div class="sub-label">Example 1 — Basic class and object creation</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="cm"># Define a class using 'class' keyword</span>
+<span class="kw">class</span> <span class="cls">Student</span>:
+    <span class="cm"># Class attribute (shared by all students)</span>
+    school <span class="op">=</span> <span class="st">"Python High School"</span>
+
+    <span class="cm"># Constructor method</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name, grade):
+        <span class="cm"># Instance attributes (unique to each object)</span>
+        <span class="se">self</span>.name  <span class="op">=</span> name
+        <span class="se">self</span>.grade <span class="op">=</span> grade
+
+    <span class="cm"># Instance method</span>
+    <span class="kw">def</span> <span class="fn">introduce</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"Hi! I am {self.name}, Grade {self.grade} at {self.school}."</span>
+
+    <span class="kw">def</span> <span class="fn">is_pass</span>(<span class="se">self</span>, score):
+        <span class="kw">return</span> <span class="st">"Pass ✅"</span> <span class="kw">if</span> score <span class="op">&gt;=</span> <span class="nm">40</span> <span class="kw">else</span> <span class="st">"Fail ❌"</span>
+
+<span class="cm"># Creating objects (instances) from the class</span>
+s1 <span class="op">=</span> <span class="cls">Student</span>(<span class="st">"Arun"</span>, <span class="nm">10</span>)     <span class="cm"># instantiation</span>
+s2 <span class="op">=</span> <span class="cls">Student</span>(<span class="st">"Priya"</span>, <span class="nm">11</span>)
+
+<span class="cm"># Access attributes using dot notation</span>
+<span class="bi">print</span>(s1.name)               <span class="cm"># instance attribute</span>
+<span class="bi">print</span>(<span class="cls">Student</span>.school)        <span class="cm"># class attribute</span>
+
+<span class="cm"># Call methods</span>
+<span class="bi">print</span>(s1.introduce())
+<span class="bi">print</span>(s2.introduce())
+<span class="bi">print</span>(<span class="st">"Result:"</span>, s1.is_pass(<span class="nm">78</span>))
+<span class="bi">print</span>(<span class="st">"Result:"</span>, s2.is_pass(<span class="nm">35</span>))</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Arun
+Python High School
+Hi! I am Arun, Grade 10 at Python High School.
+Hi! I am Priya, Grade 11 at Python High School.
+Result: Pass ✅
+Result: Fail ❌</div></div>
+
+      <div class="note-box"><span class="ni">💡</span><p><strong>Key point:</strong> s1 and s2 share the same <em>class attribute</em> <code>school</code>, but each has their own <em>instance attributes</em> <code>name</code> and <code>grade</code>. Changing <code>s1.name</code> does NOT affect <code>s2.name</code>.</p></div>
+    </div>
+  </div>
+
+  <!-- __init__ METHOD -->
+  <div class="topic" id="init">
+    <div class="topic-head">
+      <div class="topic-icon violet">⚙️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.2</div>
+        <h3>The __init__ Method (Constructor)</h3>
+        <div class="topic-desc">The special method that runs automatically when an object is created.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p>The <strong><code>__init__</code></strong> method is called a <strong>constructor</strong>. It is automatically called whenever a new object is created from the class. Its job is to <strong>initialise</strong> (set up) the object's attributes with starting values. The double underscores (dunders) before and after are Python's way of marking special built-in methods.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">Constructor</div><div class="meaning">A special method called when an object is first created. In Python, this is __init__.</div></div>
+        <div class="term-card highlight"><div class="term">__init__</div><div class="meaning">Short for "initialise". Sets up object data when created.</div></div>
+        <div class="term-card highlight"><div class="term">dunder / magic method</div><div class="meaning">Methods with double underscores on both sides. Python calls them automatically.</div></div>
+        <div class="term-card highlight"><div class="term">initialise</div><div class="meaning">To give an object its starting values when it is first created.</div></div>
+      </div>
+
+      <div class="sub-label">Example — __init__ with default values</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="kw">class</span> <span class="cls">Car</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, brand, model, year<span class="op">=</span><span class="nm">2024</span>):
+        <span class="cm">"""
+        self  → the new object being created
+        brand → passed by the user
+        year  → has a default value of 2024
+        """</span>
+        <span class="se">self</span>.brand <span class="op">=</span> brand
+        <span class="se">self</span>.model <span class="op">=</span> model
+        <span class="se">self</span>.year  <span class="op">=</span> year
+        <span class="se">self</span>.speed <span class="op">=</span> <span class="nm">0</span>         <span class="cm"># default speed at creation</span>
+
+    <span class="kw">def</span> <span class="fn">details</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"{self.year} {self.brand} {self.model}"</span>
+
+    <span class="kw">def</span> <span class="fn">accelerate</span>(<span class="se">self</span>, amount):
+        <span class="se">self</span>.speed <span class="op">+=</span> amount
+        <span class="kw">return</span> <span class="st">f"Speed: {self.speed} km/h"</span>
+
+<span class="cm"># year is not given → uses default 2024</span>
+c1 <span class="op">=</span> <span class="cls">Car</span>(<span class="st">"Toyota"</span>, <span class="st">"Camry"</span>)
+c2 <span class="op">=</span> <span class="cls">Car</span>(<span class="st">"Honda"</span>, <span class="st">"City"</span>, <span class="nm">2022</span>)
+
+<span class="bi">print</span>(c1.details())
+<span class="bi">print</span>(c2.details())
+<span class="bi">print</span>(c1.accelerate(<span class="nm">60</span>))
+<span class="bi">print</span>(c1.accelerate(<span class="nm">20</span>))</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">2024 Toyota Camry
+2022 Honda City
+Speed: 60 km/h
+Speed: 80 km/h</div></div>
+    </div>
+  </div>
+
+  <!-- SELF PARAMETER -->
+  <div class="topic" id="self">
+    <div class="topic-head">
+      <div class="topic-icon teal">🔗</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.3</div>
+        <h3>The <code>self</code> Parameter</h3>
+        <div class="topic-desc">How Python links a method call to the correct object.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box teal-border">
+        <div class="def-label" style="color:var(--teal)">📖 DEFINITION</div>
+        <p><strong><code>self</code></strong> is a reference to the <strong>current instance</strong> (object) of the class. It is the first parameter in every instance method and is automatically passed by Python when you call <code>obj.method()</code>. You can technically name it anything, but <code>self</code> is the universal Python convention.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">🪞</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p>Think of <strong>self</strong> as the word "I" or "my" in a sentence. When Arun says "my name is Arun", the word <em>my</em> refers to Arun. When Priya says "my name is Priya", <em>my</em> refers to Priya. <code>self</code> works the same way — it refers to whichever object is currently being used.</p>
+        </div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — self explained</span></div>
+<pre><span class="kw">class</span> <span class="cls">Person</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name, age):
+        <span class="se">self</span>.name <span class="op">=</span> name   <span class="cm"># 'self' refers to the new object</span>
+        <span class="se">self</span>.age  <span class="op">=</span> age
+
+    <span class="kw">def</span> <span class="fn">greet</span>(<span class="se">self</span>):        <span class="cm"># 'self' = whichever object calls this</span>
+        <span class="bi">print</span>(<span class="st">f"I am {self.name}, aged {self.age}."</span>)
+
+p1 <span class="op">=</span> <span class="cls">Person</span>(<span class="st">"Arun"</span>, <span class="nm">20</span>)
+p2 <span class="op">=</span> <span class="cls">Person</span>(<span class="st">"Priya"</span>, <span class="nm">22</span>)
+
+<span class="cm"># Python internally converts this:</span>
+p1.greet()
+<span class="cm"># → Person.greet(p1)  ← self = p1</span>
+
+p2.greet()
+<span class="cm"># → Person.greet(p2)  ← self = p2</span></pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">I am Arun, aged 20.
+I am Priya, aged 22.</div></div>
+
+      <div class="note-box"><span class="ni">📌</span><p><strong>Remember:</strong> <code>self</code> is NOT a keyword in Python — it's just a convention. You could name it <code>this</code> or <code>me</code>, but always use <code>self</code> so others can read your code easily.</p></div>
+    </div>
+  </div>
+
+  <!-- ATTRIBUTES & METHODS -->
+  <div class="topic" id="attributes">
+    <div class="topic-head">
+      <div class="topic-icon amber">🗃️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.4</div>
+        <h3>Attributes &amp; Methods in Detail</h3>
+        <div class="topic-desc">Understanding the two types of attributes and three types of methods.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box amber-border">
+        <div class="def-label" style="color:var(--amber)">📖 ATTRIBUTES</div>
+        <p><strong>Attributes</strong> are variables that store data inside a class or object. There are two kinds: <strong>Class attributes</strong> (shared by all objects) and <strong>Instance attributes</strong> (different for each object).</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">Class Attribute</div><div class="meaning">Defined directly in the class body. Shared by all instances. Access via ClassName.attr</div></div>
+        <div class="term-card"><div class="term">Instance Attribute</div><div class="meaning">Defined inside __init__ using self.attr. Each object has its own copy.</div></div>
+        <div class="term-card"><div class="term">Instance Method</div><div class="meaning">Takes self as first param. Works with instance data. Most common type.</div></div>
+        <div class="term-card"><div class="term">Class Method</div><div class="meaning">Takes cls as first param. Decorated with @classmethod. Works with class data.</div></div>
+        <div class="term-card"><div class="term">Static Method</div><div class="meaning">No self or cls. Decorated with @staticmethod. Pure utility function.</div></div>
+        <div class="term-card"><div class="term">getter / setter</div><div class="meaning">Methods used to read (get) or update (set) private attributes safely.</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Attributes &amp; Methods</span></div>
+<pre><span class="kw">class</span> <span class="cls">Circle</span>:
+    pi <span class="op">=</span> <span class="nm">3.14159</span>          <span class="cm"># CLASS attribute — shared by all circles</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, radius):
+        <span class="se">self</span>.radius <span class="op">=</span> radius  <span class="cm"># INSTANCE attribute — unique per object</span>
+
+    <span class="cm"># Instance method — uses self</span>
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="cls">Circle</span>.pi <span class="op">*</span> <span class="se">self</span>.radius <span class="op">**</span> <span class="nm">2</span>
+
+    <span class="kw">def</span> <span class="fn">circumference</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="nm">2</span> <span class="op">*</span> <span class="cls">Circle</span>.pi <span class="op">*</span> <span class="se">self</span>.radius
+
+    <span class="cm"># Class method — uses cls</span>
+    <span class="op">@</span><span class="bi">classmethod</span>
+    <span class="kw">def</span> <span class="fn">change_pi</span>(cls, new_pi):
+        cls.pi <span class="op">=</span> new_pi
+
+    <span class="cm"># Static method — no self/cls needed</span>
+    <span class="op">@</span><span class="bi">staticmethod</span>
+    <span class="kw">def</span> <span class="fn">is_valid_radius</span>(r):
+        <span class="kw">return</span> r <span class="op">&gt;</span> <span class="nm">0</span>
+
+c1 <span class="op">=</span> <span class="cls">Circle</span>(<span class="nm">5</span>)
+c2 <span class="op">=</span> <span class="cls">Circle</span>(<span class="nm">3</span>)
+
+<span class="bi">print</span>(<span class="st">f"Area of c1: {c1.area():.2f}"</span>)
+<span class="bi">print</span>(<span class="st">f"Circumference of c2: {c2.circumference():.2f}"</span>)
+<span class="bi">print</span>(<span class="st">"Valid radius -5?"</span>, <span class="cls">Circle</span>.is_valid_radius(<span class="op">-</span><span class="nm">5</span>))</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Area of c1: 78.54
+Circumference of c2: 18.85
+Valid radius -5? False</div></div>
+    </div>
+  </div>
+
+  <!-- INHERITANCE -->
+  <div class="topic" id="inheritance">
+    <div class="topic-head">
+      <div class="topic-icon green">🌿</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.5</div>
+        <h3>Inheritance</h3>
+        <div class="topic-desc">Reusing code by building new classes on top of existing ones.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box green-border">
+        <div class="def-label" style="color:var(--green)">📖 DEFINITION</div>
+        <p><strong>Inheritance</strong> is the process where one class (called the <strong>child class</strong> or <strong>subclass</strong>) acquires the properties (attributes) and behaviours (methods) of another class (called the <strong>parent class</strong>, <strong>superclass</strong>, or <strong>base class</strong>). This promotes <strong>code reuse</strong> — you don't have to re-write the same code again.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">👨‍👩‍👧</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p>Children inherit features from their parents — eye colour, height, surname. They also have their own unique features. Similarly, a child class inherits from a parent class and can also add its own new methods.</p>
+        </div>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">parent class / base class / superclass</div><div class="meaning">The class being inherited FROM. Already has the shared code.</div></div>
+        <div class="term-card highlight"><div class="term">child class / derived class / subclass</div><div class="meaning">The class that INHERITS from the parent. Gets all parent features + adds its own.</div></div>
+        <div class="term-card highlight"><div class="term">super()</div><div class="meaning">Built-in function to call a method from the parent class.</div></div>
+        <div class="term-card highlight"><div class="term">method overriding</div><div class="meaning">Child class redefines a method from the parent with new behaviour.</div></div>
+        <div class="term-card highlight"><div class="term">isinstance()</div><div class="meaning">Checks if an object is an instance of a class (or its parent).</div></div>
+        <div class="term-card highlight"><div class="term">issubclass()</div><div class="meaning">Checks if one class is a subclass of another.</div></div>
+      </div>
+
+      <div class="sub-label">Example 1 — Basic Inheritance</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Single Inheritance</span></div>
+<pre><span class="cm"># PARENT CLASS (Base class)</span>
+<span class="kw">class</span> <span class="cls">Animal</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name, sound):
+        <span class="se">self</span>.name  <span class="op">=</span> name
+        <span class="se">self</span>.sound <span class="op">=</span> sound
+
+    <span class="kw">def</span> <span class="fn">speak</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"{self.name} says {self.sound}!"</span>
+
+    <span class="kw">def</span> <span class="fn">eat</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"{self.name} is eating."</span>
+
+<span class="cm"># CHILD CLASS (inherits from Animal)</span>
+<span class="kw">class</span> <span class="cls">Dog</span>(<span class="cls">Animal</span>):            <span class="cm"># Dog IS-A Animal</span>
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name, breed):
+        <span class="bi">super</span>().<span class="fn">__init__</span>(name, <span class="st">"Woof"</span>)  <span class="cm"># call parent __init__</span>
+        <span class="se">self</span>.breed <span class="op">=</span> breed          <span class="cm"># new attribute in child</span>
+
+    <span class="kw">def</span> <span class="fn">fetch</span>(<span class="se">self</span>):                <span class="cm"># new method in child</span>
+        <span class="kw">return</span> <span class="st">f"{self.name} fetches the ball! 🎾"</span>
+
+<span class="kw">class</span> <span class="cls">Cat</span>(<span class="cls">Animal</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name):
+        <span class="bi">super</span>().<span class="fn">__init__</span>(name, <span class="st">"Meow"</span>)
+
+    <span class="kw">def</span> <span class="fn">purr</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"{self.name} purrs 😻"</span>
+
+dog <span class="op">=</span> <span class="cls">Dog</span>(<span class="st">"Bruno"</span>, <span class="st">"Labrador"</span>)
+cat <span class="op">=</span> <span class="cls">Cat</span>(<span class="st">"Whiskers"</span>)
+
+<span class="bi">print</span>(dog.speak())    <span class="cm"># inherited from Animal</span>
+<span class="bi">print</span>(dog.eat())      <span class="cm"># inherited from Animal</span>
+<span class="bi">print</span>(dog.fetch())    <span class="cm"># Dog's own method</span>
+<span class="bi">print</span>(cat.speak())
+<span class="bi">print</span>(cat.purr())
+
+<span class="bi">print</span>(<span class="bi">isinstance</span>(dog, <span class="cls">Animal</span>))   <span class="cm"># True</span>
+<span class="bi">print</span>(<span class="bi">issubclass</span>(<span class="cls">Dog</span>, <span class="cls">Animal</span>))   <span class="cm"># True</span></pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Bruno says Woof!
+Bruno is eating.
+Bruno fetches the ball! 🎾
+Whiskers says Meow!
+Whiskers purrs 😻
+True
+True</div></div>
+    </div>
+  </div>
+
+  <!-- TYPES OF INHERITANCE -->
+  <div class="topic" id="types-inherit">
+    <div class="topic-head">
+      <div class="topic-icon green">🌳</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.6</div>
+        <h3>Types of Inheritance</h3>
+        <div class="topic-desc">Python supports 5 types of inheritance — each solves different design problems.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <table class="ref-table">
+        <thead><tr><th>Type</th><th>Description</th><th>Structure</th></tr></thead>
+        <tbody>
+          <tr><td>Single</td><td>One child inherits from one parent</td><td>A → B</td></tr>
+          <tr><td>Multiple</td><td>One child inherits from more than one parent</td><td>A, B → C</td></tr>
+          <tr><td>Multilevel</td><td>Chained inheritance across multiple levels</td><td>A → B → C</td></tr>
+          <tr><td>Hierarchical</td><td>Multiple children inherit from one parent</td><td>A → B, A → C</td></tr>
+          <tr><td>Hybrid</td><td>Combination of two or more types</td><td>Mixed of above</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sub-label">Multilevel Inheritance</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Multilevel Inheritance</span></div>
+<pre><span class="kw">class</span> <span class="cls">LivingBeing</span>:
+    <span class="kw">def</span> <span class="fn">breathe</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"Breathing..."</span>
+
+<span class="kw">class</span> <span class="cls">Animal</span>(<span class="cls">LivingBeing</span>):     <span class="cm"># Animal ← LivingBeing</span>
+    <span class="kw">def</span> <span class="fn">move</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"Moving..."</span>
+
+<span class="kw">class</span> <span class="cls">Dog</span>(<span class="cls">Animal</span>):             <span class="cm"># Dog ← Animal ← LivingBeing</span>
+    <span class="kw">def</span> <span class="fn">bark</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"Woof!"</span>
+
+d <span class="op">=</span> <span class="cls">Dog</span>()
+<span class="bi">print</span>(d.breathe())  <span class="cm"># from LivingBeing (grandparent)</span>
+<span class="bi">print</span>(d.move())     <span class="cm"># from Animal (parent)</span>
+<span class="bi">print</span>(d.bark())     <span class="cm"># Dog's own</span></pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Breathing...
+Moving...
+Woof!</div></div>
+
+      <div class="sub-label">Multiple Inheritance</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Multiple Inheritance</span></div>
+<pre><span class="kw">class</span> <span class="cls">Mother</span>:
+    <span class="kw">def</span> <span class="fn">cooking</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"Cooking skill from Mother 🍳"</span>
+
+<span class="kw">class</span> <span class="cls">Father</span>:
+    <span class="kw">def</span> <span class="fn">driving</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"Driving skill from Father 🚗"</span>
+
+<span class="kw">class</span> <span class="cls">Child</span>(<span class="cls">Mother</span>, <span class="cls">Father</span>):  <span class="cm"># inherits BOTH</span>
+    <span class="kw">def</span> <span class="fn">studying</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"Child's own skill: Studying 📚"</span>
+
+c <span class="op">=</span> <span class="cls">Child</span>()
+<span class="bi">print</span>(c.cooking())
+<span class="bi">print</span>(c.driving())
+<span class="bi">print</span>(c.studying())
+
+<span class="cm"># MRO — Method Resolution Order</span>
+<span class="bi">print</span>(<span class="cls">Child</span>.__mro__)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Cooking skill from Mother 🍳
+Driving skill from Father 🚗
+Child's own skill: Studying 📚
+(&lt;class 'Child'&gt;, &lt;class 'Mother'&gt;, &lt;class 'Father'&gt;, &lt;class 'object'&gt;)</div></div>
+      <div class="note-box"><span class="ni">💡</span><p><strong>MRO (Method Resolution Order)</strong> is the order Python uses to search for a method when you call it. It follows the <strong>C3 linearisation</strong> algorithm, going from most specific (child) to least specific (object). When two parent classes have the same method, Python picks from the one listed first.</p></div>
+    </div>
+  </div>
+
+  <!-- POLYMORPHISM -->
+  <div class="topic" id="polymorphism">
+    <div class="topic-head">
+      <div class="topic-icon rose">🔀</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.7</div>
+        <h3>Polymorphism</h3>
+        <div class="topic-desc">One interface, many forms — the same method name behaves differently in different classes.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box rose-border">
+        <div class="def-label" style="color:var(--red)">📖 DEFINITION</div>
+        <p><strong>Polymorphism</strong> (from Greek: <em>poly</em> = many, <em>morph</em> = forms) means that the <strong>same method name</strong> can behave differently depending on the class it belongs to. It allows you to write a single line of code that works with many types of objects.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">🔊</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p>The <strong>"+", operator</strong> in Python is polymorphic: <code>2 + 3 = 5</code> (addition) but <code>"Hello" + " World" = "Hello World"</code> (concatenation). Same symbol, different behaviour based on the type.</p>
+        </div>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">Method Overriding</div><div class="meaning">Child class redefines a parent method. Called at runtime (run-time polymorphism).</div></div>
+        <div class="term-card highlight"><div class="term">Duck Typing</div><div class="meaning">"If it walks like a duck, it's a duck." Python cares about behaviour, not type.</div></div>
+        <div class="term-card highlight"><div class="term">Operator Overloading</div><div class="meaning">Redefine how operators (+, -, ==) work for custom classes using dunder methods.</div></div>
+        <div class="term-card highlight"><div class="term">len() polymorphism</div><div class="meaning">len() works on strings, lists, tuples, dicts — each returns a count differently.</div></div>
+      </div>
+
+      <div class="sub-label">Example 1 — Method Overriding (Runtime Polymorphism)</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="kw">class</span> <span class="cls">Shape</span>:
+    <span class="kw">def</span> <span class="fn">draw</span>(<span class="se">self</span>):
+        <span class="bi">print</span>(<span class="st">"Drawing a generic shape"</span>)
+
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="nm">0</span>
+
+<span class="kw">class</span> <span class="cls">Circle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, r): <span class="se">self</span>.r <span class="op">=</span> r
+    <span class="kw">def</span> <span class="fn">draw</span>(<span class="se">self</span>):   <span class="cm"># OVERRIDES parent</span>
+        <span class="bi">print</span>(<span class="st">f"Drawing Circle with radius {self.r} ⭕"</span>)
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="se">self</span>): <span class="kw">return</span> <span class="nm">3.14</span> <span class="op">*</span> <span class="se">self</span>.r <span class="op">**</span> <span class="nm">2</span>
+
+<span class="kw">class</span> <span class="cls">Rectangle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, w, h): <span class="se">self</span>.w <span class="op">=</span> w; <span class="se">self</span>.h <span class="op">=</span> h
+    <span class="kw">def</span> <span class="fn">draw</span>(<span class="se">self</span>):
+        <span class="bi">print</span>(<span class="st">f"Drawing Rectangle {self.w}x{self.h} ▭"</span>)
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="se">self</span>): <span class="kw">return</span> <span class="se">self</span>.w <span class="op">*</span> <span class="se">self</span>.h
+
+<span class="kw">class</span> <span class="cls">Triangle</span>(<span class="cls">Shape</span>):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, b, h): <span class="se">self</span>.b <span class="op">=</span> b; <span class="se">self</span>.h <span class="op">=</span> h
+    <span class="kw">def</span> <span class="fn">draw</span>(<span class="se">self</span>):
+        <span class="bi">print</span>(<span class="st">f"Drawing Triangle base {self.b} height {self.h} △"</span>)
+    <span class="kw">def</span> <span class="fn">area</span>(<span class="se">self</span>): <span class="kw">return</span> <span class="nm">0.5</span> <span class="op">*</span> <span class="se">self</span>.b <span class="op">*</span> <span class="se">self</span>.h
+
+<span class="cm"># Polymorphism in action</span>
+shapes <span class="op">=</span> [<span class="cls">Circle</span>(<span class="nm">5</span>), <span class="cls">Rectangle</span>(<span class="nm">4</span>, <span class="nm">6</span>), <span class="cls">Triangle</span>(<span class="nm">3</span>, <span class="nm">8</span>)]
+
+<span class="kw">for</span> s <span class="kw">in</span> shapes:
+    s.draw()                        <span class="cm"># same call, different output</span>
+    <span class="bi">print</span>(<span class="st">f"  Area = {s.area()}"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Drawing Circle with radius 5 ⭕
+  Area = 78.5
+Drawing Rectangle 4x6 ▭
+  Area = 24
+Drawing Triangle base 3 height 8 △
+  Area = 12.0</div></div>
+
+      <div class="sub-label">Example 2 — Operator Overloading using dunder methods</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="kw">class</span> <span class="cls">Fraction</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, num, den):
+        <span class="se">self</span>.num <span class="op">=</span> num
+        <span class="se">self</span>.den <span class="op">=</span> den
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="se">self</span>):            <span class="cm"># makes print() readable</span>
+        <span class="kw">return</span> <span class="st">f"{self.num}/{self.den}"</span>
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(<span class="se">self</span>, other):     <span class="cm"># overloads +</span>
+        n <span class="op">=</span> <span class="se">self</span>.num <span class="op">*</span> other.den <span class="op">+</span> other.num <span class="op">*</span> <span class="se">self</span>.den
+        d <span class="op">=</span> <span class="se">self</span>.den <span class="op">*</span> other.den
+        <span class="kw">return</span> <span class="cls">Fraction</span>(n, d)
+
+    <span class="kw">def</span> <span class="fn">__mul__</span>(<span class="se">self</span>, other):     <span class="cm"># overloads *</span>
+        <span class="kw">return</span> <span class="cls">Fraction</span>(<span class="se">self</span>.num <span class="op">*</span> other.num, <span class="se">self</span>.den <span class="op">*</span> other.den)
+
+    <span class="kw">def</span> <span class="fn">__eq__</span>(<span class="se">self</span>, other):      <span class="cm"># overloads ==</span>
+        <span class="kw">return</span> <span class="se">self</span>.num <span class="op">*</span> other.den <span class="op">==</span> other.num <span class="op">*</span> <span class="se">self</span>.den
+
+f1 <span class="op">=</span> <span class="cls">Fraction</span>(<span class="nm">1</span>, <span class="nm">2</span>)
+f2 <span class="op">=</span> <span class="cls">Fraction</span>(<span class="nm">1</span>, <span class="nm">3</span>)
+<span class="bi">print</span>(<span class="st">"f1 + f2 ="</span>, f1 <span class="op">+</span> f2)
+<span class="bi">print</span>(<span class="st">"f1 * f2 ="</span>, f1 <span class="op">*</span> f2)
+<span class="bi">print</span>(<span class="st">"f1 == f2?"</span>, f1 <span class="op">==</span> f2)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">f1 + f2 = 5/6
+f1 * f2 = 1/6
+f1 == f2? False</div></div>
+    </div>
+  </div>
+
+  <!-- ENCAPSULATION -->
+  <div class="topic" id="encapsulation">
+    <div class="topic-head">
+      <div class="topic-icon sky">🔒</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.8</div>
+        <h3>Encapsulation</h3>
+        <div class="topic-desc">Protecting data by restricting direct access from outside the class.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p><strong>Encapsulation</strong> means <strong>bundling data (attributes) and methods together in a class</strong>, and <strong>controlling access</strong> to the data. It prevents outsiders from directly modifying important data, maintaining data integrity. This is achieved using <strong>access modifiers</strong>.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">💊</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p>A medicine capsule — the active ingredients are hidden inside. You can take the medicine (use the object) without needing to see or change the chemical formula inside (private data). The capsule's outer shell controls access.</p>
+        </div>
+      </div>
+
+      <div class="access-grid">
+        <div class="access-card pub">
+          <div class="ac-sym">name</div>
+          <div class="ac-name">Public</div>
+          <div class="ac-desc">Accessible from anywhere — inside class, outside class, and in child classes.</div>
+        </div>
+        <div class="access-card pro">
+          <div class="ac-sym">_name</div>
+          <div class="ac-name">Protected</div>
+          <div class="ac-desc">Single underscore. Convention — "don't use outside class." Not enforced by Python.</div>
+        </div>
+        <div class="access-card pri">
+          <div class="ac-sym">__name</div>
+          <div class="ac-name">Private</div>
+          <div class="ac-desc">Double underscore. Name-mangled by Python (_ClassName__name). Harder to access outside.</div>
+        </div>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">access modifier</div><div class="meaning">Controls who can access class attributes. Public, Protected, Private.</div></div>
+        <div class="term-card"><div class="term">name mangling</div><div class="meaning">Python renames __attr to _ClassName__attr to make it hard to access outside.</div></div>
+        <div class="term-card"><div class="term">@property</div><div class="meaning">A decorator that makes a method behave like an attribute (getter).</div></div>
+        <div class="term-card"><div class="term">setter</div><div class="meaning">A method to update a private attribute with validation.</div></div>
+        <div class="term-card"><div class="term">data integrity</div><div class="meaning">Keeping data accurate and valid. Encapsulation helps enforce this.</div></div>
+        <div class="term-card"><div class="term">decorator</div><div class="meaning">A function (like @property) that modifies or wraps another function's behaviour.</div></div>
+      </div>
+
+      <div class="sub-label">Example — Bank Account with private data</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="kw">class</span> <span class="cls">BankAccount</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, owner, balance):
+        <span class="se">self</span>.owner     <span class="op">=</span> owner         <span class="cm"># public</span>
+        <span class="se">self</span>._bank     <span class="op">=</span> <span class="st">"PyBank"</span>     <span class="cm"># protected (by convention)</span>
+        <span class="se">self</span>.__balance <span class="op">=</span> balance       <span class="cm"># private (name-mangled)</span>
+        <span class="se">self</span>.__pin     <span class="op">=</span> <span class="nm">1234</span>          <span class="cm"># private</span>
+
+    <span class="cm"># Getter — read-only access to balance</span>
+    <span class="op">@</span><span class="bi">property</span>
+    <span class="kw">def</span> <span class="fn">balance</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="se">self</span>.__balance
+
+    <span class="cm"># Setter — controlled update</span>
+    <span class="op">@</span>balance.setter
+    <span class="kw">def</span> <span class="fn">balance</span>(<span class="se">self</span>, amount):
+        <span class="kw">if</span> amount <span class="op">&lt;</span> <span class="nm">0</span>:
+            <span class="bi">print</span>(<span class="st">"❌ Balance cannot be negative!"</span>)
+        <span class="kw">else</span>:
+            <span class="se">self</span>.__balance <span class="op">=</span> amount
+
+    <span class="kw">def</span> <span class="fn">deposit</span>(<span class="se">self</span>, amount, pin):
+        <span class="kw">if</span> pin <span class="op">!=</span> <span class="se">self</span>.__pin:
+            <span class="kw">return</span> <span class="st">"❌ Wrong PIN!"</span>
+        <span class="se">self</span>.__balance <span class="op">+=</span> amount
+        <span class="kw">return</span> <span class="st">f"✅ Deposited ₹{amount}. Balance: ₹{self.__balance}"</span>
+
+    <span class="kw">def</span> <span class="fn">withdraw</span>(<span class="se">self</span>, amount, pin):
+        <span class="kw">if</span> pin <span class="op">!=</span> <span class="se">self</span>.__pin:
+            <span class="kw">return</span> <span class="st">"❌ Wrong PIN!"</span>
+        <span class="kw">if</span> amount <span class="op">&gt;</span> <span class="se">self</span>.__balance:
+            <span class="kw">return</span> <span class="st">"❌ Insufficient balance!"</span>
+        <span class="se">self</span>.__balance <span class="op">-=</span> amount
+        <span class="kw">return</span> <span class="st">f"✅ Withdrawn ₹{amount}. Remaining: ₹{self.__balance}"</span>
+
+acc <span class="op">=</span> <span class="cls">BankAccount</span>(<span class="st">"Priya"</span>, <span class="nm">10000</span>)
+<span class="bi">print</span>(<span class="st">"Balance:"</span>, acc.balance)          <span class="cm"># uses @property getter</span>
+<span class="bi">print</span>(acc.deposit(<span class="nm">5000</span>, <span class="nm">1234</span>))
+<span class="bi">print</span>(acc.withdraw(<span class="nm">2000</span>, <span class="nm">9999</span>))         <span class="cm"># wrong pin</span>
+<span class="bi">print</span>(acc.withdraw(<span class="nm">2000</span>, <span class="nm">1234</span>))
+
+<span class="cm"># acc.__balance → AttributeError (private!)</span>
+<span class="cm"># But name-mangled version still accessible:</span>
+<span class="bi">print</span>(acc._BankAccount__balance)         <span class="cm"># 13000</span></pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Balance: 10000
+✅ Deposited ₹5000. Balance: ₹15000
+❌ Wrong PIN!
+✅ Withdrawn ₹2000. Remaining: ₹13000
+13000</div></div>
+    </div>
+  </div>
+
+  <!-- ABSTRACTION -->
+  <div class="topic" id="abstraction">
+    <div class="topic-head">
+      <div class="topic-icon violet">🎭</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.9</div>
+        <h3>Abstraction</h3>
+        <div class="topic-desc">Hiding internal complexity and showing only what's necessary.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p><strong>Abstraction</strong> means <strong>hiding complex implementation details</strong> and exposing only the <strong>essential features</strong> to the user. In Python, abstraction is achieved using <strong>Abstract Base Classes (ABC)</strong>. An abstract class is a class that cannot be instantiated — it only serves as a contract that child classes must follow.</p>
+      </div>
+
+      <div class="analogy">
+        <div class="icon">📱</div>
+        <div class="analogy-text">
+          <div class="label">REAL-WORLD ANALOGY</div>
+          <p>When you press the camera button on your phone, you get a photo — you don't need to understand sensors, apertures, or processing algorithms. The phone <em>abstracts</em> the complexity and gives you a simple interface: just press the button.</p>
+        </div>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">ABC (Abstract Base Class)</div><div class="meaning">A class from the abc module that provides the framework for defining abstract classes.</div></div>
+        <div class="term-card highlight"><div class="term">@abstractmethod</div><div class="meaning">A decorator that marks a method as abstract — any child class MUST implement it.</div></div>
+        <div class="term-card highlight"><div class="term">abstract class</div><div class="meaning">Cannot be instantiated. Acts as a template that enforces a contract on child classes.</div></div>
+        <div class="term-card highlight"><div class="term">concrete method</div><div class="meaning">A method in an abstract class that HAS an implementation (not abstract).</div></div>
+        <div class="term-card highlight"><div class="term">instantiate</div><div class="meaning">Create an object from a class. You CANNOT instantiate an abstract class.</div></div>
+        <div class="term-card highlight"><div class="term">contract / interface</div><div class="meaning">A guarantee that child classes implement certain methods. ABC enforces this.</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Abstraction with ABC</span></div>
+<pre><span class="kw">from</span> abc <span class="kw">import</span> ABC, abstractmethod
+
+<span class="cm"># Abstract class — cannot create objects of this class</span>
+<span class="kw">class</span> <span class="cls">Payment</span>(ABC):
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, amount):
+        <span class="se">self</span>.amount <span class="op">=</span> amount
+
+    <span class="op">@</span>abstractmethod
+    <span class="kw">def</span> <span class="fn">pay</span>(<span class="se">self</span>):
+        <span class="kw">pass</span>                  <span class="cm"># child MUST implement this</span>
+
+    <span class="op">@</span>abstractmethod
+    <span class="kw">def</span> <span class="fn">verify</span>(<span class="se">self</span>):
+        <span class="kw">pass</span>                  <span class="cm"># child MUST implement this</span>
+
+    <span class="cm"># Concrete method — available to all children</span>
+    <span class="kw">def</span> <span class="fn">receipt</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"Payment of ₹{self.amount} processed."</span>
+
+<span class="cm"># Concrete class — implements abstract methods</span>
+<span class="kw">class</span> <span class="cls">UPIPayment</span>(<span class="cls">Payment</span>):
+    <span class="kw">def</span> <span class="fn">pay</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"Paid ₹{self.amount} via UPI 📱"</span>
+    <span class="kw">def</span> <span class="fn">verify</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"UPI PIN verified ✅"</span>
+
+<span class="kw">class</span> <span class="cls">CardPayment</span>(<span class="cls">Payment</span>):
+    <span class="kw">def</span> <span class="fn">pay</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"Paid ₹{self.amount} via Card 💳"</span>
+    <span class="kw">def</span> <span class="fn">verify</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">"OTP verified ✅"</span>
+
+<span class="cm"># p = Payment(100)  → TypeError! Cannot instantiate abstract class</span>
+
+u <span class="op">=</span> <span class="cls">UPIPayment</span>(<span class="nm">500</span>)
+c <span class="op">=</span> <span class="cls">CardPayment</span>(<span class="nm">1200</span>)
+
+<span class="kw">for</span> payment <span class="kw">in</span> [u, c]:
+    <span class="bi">print</span>(payment.verify())
+    <span class="bi">print</span>(payment.pay())
+    <span class="bi">print</span>(payment.receipt())
+    <span class="bi">print</span>(<span class="st">"---"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">UPI PIN verified ✅
+Paid ₹500 via UPI 📱
+Payment of ₹500 processed.
+---
+OTP verified ✅
+Paid ₹1200 via Card 💳
+Payment of ₹1200 processed.
+---</div></div>
+    </div>
+  </div>
+
+  <!-- SPECIAL METHODS -->
+  <div class="topic" id="special">
+    <div class="topic-head">
+      <div class="topic-icon amber">✨</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.10</div>
+        <h3>Special / Dunder / Magic Methods</h3>
+        <div class="topic-desc">Built-in methods Python calls automatically to make your objects work like native types.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box amber-border">
+        <div class="def-label" style="color:var(--amber)">📖 DEFINITION</div>
+        <p><strong>Dunder methods</strong> (short for "double underscore methods") are special methods in Python with <strong>double underscores on both sides</strong> (e.g., <code>__str__</code>, <code>__len__</code>). Python calls them <strong>automatically</strong> in response to built-in operations (like <code>print()</code>, <code>len()</code>, <code>+</code>, <code>==</code>). They let your objects behave like built-in Python types.</p>
+      </div>
+
+      <table class="ref-table">
+        <thead><tr><th>Dunder Method</th><th>Triggered by</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>__init__(self)</td><td>ClassName()</td><td>Constructor — initialise object</td></tr>
+          <tr><td>__str__(self)</td><td>print(obj), str(obj)</td><td>Human-readable string</td></tr>
+          <tr><td>__repr__(self)</td><td>repr(obj)</td><td>Developer-readable string</td></tr>
+          <tr><td>__len__(self)</td><td>len(obj)</td><td>Return length of object</td></tr>
+          <tr><td>__add__(self, other)</td><td>obj1 + obj2</td><td>Addition operator</td></tr>
+          <tr><td>__sub__(self, other)</td><td>obj1 - obj2</td><td>Subtraction operator</td></tr>
+          <tr><td>__eq__(self, other)</td><td>obj1 == obj2</td><td>Equality comparison</td></tr>
+          <tr><td>__lt__(self, other)</td><td>obj1 &lt; obj2</td><td>Less-than comparison</td></tr>
+          <tr><td>__getitem__(self,key)</td><td>obj[key]</td><td>Indexing operator</td></tr>
+          <tr><td>__del__(self)</td><td>del obj</td><td>Destructor — cleanup on delete</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Special Methods</span></div>
+<pre><span class="kw">class</span> <span class="cls">ShoppingCart</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>):
+        <span class="se">self</span>.items <span class="op">=</span> []
+
+    <span class="kw">def</span> <span class="fn">add</span>(<span class="se">self</span>, item, price):
+        <span class="se">self</span>.items.append({<span class="st">"item"</span>: item, <span class="st">"price"</span>: price})
+
+    <span class="kw">def</span> <span class="fn">__len__</span>(<span class="se">self</span>):               <span class="cm"># len(cart)</span>
+        <span class="kw">return</span> <span class="bi">len</span>(<span class="se">self</span>.items)
+
+    <span class="kw">def</span> <span class="fn">__str__</span>(<span class="se">self</span>):               <span class="cm"># print(cart)</span>
+        lines <span class="op">=</span> [<span class="st">f"  - {i['item']}: ₹{i['price']}"</span> <span class="kw">for</span> i <span class="kw">in</span> <span class="se">self</span>.items]
+        <span class="kw">return</span> <span class="st">"🛒 Cart:\n"</span> <span class="op">+</span> <span class="st">"\n"</span>.join(lines)
+
+    <span class="kw">def</span> <span class="fn">__add__</span>(<span class="se">self</span>, other):        <span class="cm"># cart1 + cart2</span>
+        merged <span class="op">=</span> <span class="cls">ShoppingCart</span>()
+        merged.items <span class="op">=</span> <span class="se">self</span>.items <span class="op">+</span> other.items
+        <span class="kw">return</span> merged
+
+    <span class="kw">def</span> <span class="fn">__getitem__</span>(<span class="se">self</span>, index):   <span class="cm"># cart[0]</span>
+        <span class="kw">return</span> <span class="se">self</span>.items[index]
+
+    <span class="kw">def</span> <span class="fn">total</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="bi">sum</span>(i[<span class="st">"price"</span>] <span class="kw">for</span> i <span class="kw">in</span> <span class="se">self</span>.items)
+
+cart1 <span class="op">=</span> <span class="cls">ShoppingCart</span>()
+cart1.add(<span class="st">"Rice 5kg"</span>, <span class="nm">250</span>)
+cart1.add(<span class="st">"Dal 1kg"</span>, <span class="nm">120</span>)
+
+cart2 <span class="op">=</span> <span class="cls">ShoppingCart</span>()
+cart2.add(<span class="st">"Milk 1L"</span>, <span class="nm">60</span>)
+
+<span class="bi">print</span>(cart1)                        <span class="cm"># __str__</span>
+<span class="bi">print</span>(<span class="st">"Items:"</span>, <span class="bi">len</span>(cart1))         <span class="cm"># __len__</span>
+<span class="bi">print</span>(<span class="st">"First item:"</span>, cart1[<span class="nm">0</span>])      <span class="cm"># __getitem__</span>
+<span class="bi">print</span>(<span class="st">"Total: ₹"</span>, cart1.total())
+
+combined <span class="op">=</span> cart1 <span class="op">+</span> cart2           <span class="cm"># __add__</span>
+<span class="bi">print</span>(<span class="st">"\nCombined Cart Total: ₹"</span>, combined.total())</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">🛒 Cart:
+  - Rice 5kg: ₹250
+  - Dal 1kg: ₹120
+Items: 2
+First item: {'item': 'Rice 5kg', 'price': 250}
+Total: ₹ 370
+
+Combined Cart Total: ₹ 430</div></div>
+    </div>
+  </div>
+
+  <!-- CLASS & STATIC METHODS -->
+  <div class="topic" id="classstatic">
+    <div class="topic-head">
+      <div class="topic-icon blue">⚙️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.11</div>
+        <h3>Class Methods &amp; Static Methods</h3>
+        <div class="topic-desc">Distinguish between methods that need instance data, class data, or no data at all.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <table class="ref-table">
+        <thead><tr><th>Type</th><th>Decorator</th><th>First Param</th><th>Can Access</th><th>Use Case</th></tr></thead>
+        <tbody>
+          <tr><td>Instance Method</td><td>(none)</td><td>self</td><td>Instance + Class data</td><td>Most methods — work on object data</td></tr>
+          <tr><td>Class Method</td><td>@classmethod</td><td>cls</td><td>Class data only</td><td>Factory methods, alternate constructors</td></tr>
+          <tr><td>Static Method</td><td>@staticmethod</td><td>(none)</td><td>Nothing automatically</td><td>Utility functions related to the class</td></tr>
+        </tbody>
+      </table>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">@classmethod</div><div class="meaning">Decorator that converts a method to a class method. Receives cls (the class) instead of self.</div></div>
+        <div class="term-card"><div class="term">@staticmethod</div><div class="meaning">Decorator that creates a method with no automatic arguments. Pure utility function.</div></div>
+        <div class="term-card"><div class="term">cls</div><div class="meaning">Refers to the class itself (not an instance). Like self but for the class.</div></div>
+        <div class="term-card"><div class="term">factory method</div><div class="meaning">A class method used as an alternate way to create objects (alternate constructor).</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="kw">class</span> <span class="cls">Temperature</span>:
+    unit <span class="op">=</span> <span class="st">"Celsius"</span>        <span class="cm"># class attribute</span>
+
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, celsius):
+        <span class="se">self</span>.celsius <span class="op">=</span> celsius   <span class="cm"># instance attribute</span>
+
+    <span class="cm"># Instance method — uses self</span>
+    <span class="kw">def</span> <span class="fn">to_fahrenheit</span>(<span class="se">self</span>):
+        <span class="kw">return</span> (<span class="se">self</span>.celsius <span class="op">*</span> <span class="nm">9</span><span class="op">/</span><span class="nm">5</span>) <span class="op">+</span> <span class="nm">32</span>
+
+    <span class="cm"># Class method — factory: create from Fahrenheit</span>
+    <span class="op">@</span><span class="bi">classmethod</span>
+    <span class="kw">def</span> <span class="fn">from_fahrenheit</span>(cls, fahrenheit):
+        celsius <span class="op">=</span> (fahrenheit <span class="op">-</span> <span class="nm">32</span>) <span class="op">*</span> <span class="nm">5</span><span class="op">/</span><span class="nm">9</span>
+        <span class="kw">return</span> cls(celsius)           <span class="cm"># creates Temperature object</span>
+
+    <span class="cm"># Class method — change class attribute</span>
+    <span class="op">@</span><span class="bi">classmethod</span>
+    <span class="kw">def</span> <span class="fn">set_unit</span>(cls, unit):
+        cls.unit <span class="op">=</span> unit
+
+    <span class="cm"># Static method — utility, no self/cls</span>
+    <span class="op">@</span><span class="bi">staticmethod</span>
+    <span class="kw">def</span> <span class="fn">is_freezing</span>(celsius):
+        <span class="kw">return</span> celsius <span class="op">&lt;=</span> <span class="nm">0</span>
+
+<span class="cm"># Create from Celsius</span>
+t1 <span class="op">=</span> <span class="cls">Temperature</span>(<span class="nm">100</span>)
+<span class="bi">print</span>(<span class="st">f"{t1.celsius}°C = {t1.to_fahrenheit()}°F"</span>)
+
+<span class="cm"># Create from Fahrenheit (factory)</span>
+t2 <span class="op">=</span> <span class="cls">Temperature</span>.from_fahrenheit(<span class="nm">98.6</span>)
+<span class="bi">print</span>(<span class="st">f"Body temp: {t2.celsius:.2f}°C"</span>)
+
+<span class="cm"># Static method</span>
+<span class="bi">print</span>(<span class="st">"Is -5 freezing?"</span>, <span class="cls">Temperature</span>.is_freezing(<span class="op">-</span><span class="nm">5</span>))</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">100°C = 212.0°F
+Body temp: 37.00°C
+Is -5 freezing? True</div></div>
+    </div>
+  </div>
+
+  <!-- COMPOSITION -->
+  <div class="topic" id="composition">
+    <div class="topic-head">
+      <div class="topic-icon rose">🧩</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.12</div>
+        <h3>Composition (HAS-A Relationship)</h3>
+        <div class="topic-desc">Building complex objects by including simpler objects inside them.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box rose-border">
+        <div class="def-label" style="color:var(--red)">📖 DEFINITION</div>
+        <p><strong>Composition</strong> is a design principle where a class contains objects of other classes as attributes. This models a <strong>"HAS-A"</strong> relationship (a Car HAS-A Engine). Composition is often preferred over deep inheritance chains — it keeps code flexible and modular.</p>
+      </div>
+
+      <div class="diagram">
+Inheritance  →  IS-A relationship  (Dog IS-A Animal)
+Composition  →  HAS-A relationship (Car HAS-A Engine)
+
+class Engine:     ← standalone class
+class Wheel:      ← standalone class
+class Car:
+    self.engine = Engine()    ← Car HAS-A Engine
+    self.wheels = [Wheel() for _ in range(4)]
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Composition</span></div>
+<pre><span class="kw">class</span> <span class="cls">Battery</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, capacity_kwh):
+        <span class="se">self</span>.capacity <span class="op">=</span> capacity_kwh
+        <span class="se">self</span>.charge   <span class="op">=</span> <span class="nm">100</span>   <span class="cm"># percentage</span>
+
+    <span class="kw">def</span> <span class="fn">status</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"Battery {self.capacity}kWh — {self.charge}% charged"</span>
+
+<span class="kw">class</span> <span class="cls">Motor</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, horsepower):
+        <span class="se">self</span>.hp <span class="op">=</span> horsepower
+
+    <span class="kw">def</span> <span class="fn">start</span>(<span class="se">self</span>):
+        <span class="kw">return</span> <span class="st">f"⚡ Electric motor ({self.hp}hp) started silently!"</span>
+
+<span class="kw">class</span> <span class="cls">GPS</span>:
+    <span class="kw">def</span> <span class="fn">navigate</span>(<span class="se">self</span>, destination):
+        <span class="kw">return</span> <span class="st">f"🗺️ Navigating to {destination}..."</span>
+
+<span class="cm"># ElectricCar HAS-A Battery, HAS-A Motor, HAS-A GPS</span>
+<span class="kw">class</span> <span class="cls">ElectricCar</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, brand):
+        <span class="se">self</span>.brand   <span class="op">=</span> brand
+        <span class="se">self</span>.battery <span class="op">=</span> <span class="cls">Battery</span>(<span class="nm">82</span>)   <span class="cm"># composition</span>
+        <span class="se">self</span>.motor   <span class="op">=</span> <span class="cls">Motor</span>(<span class="nm">670</span>)    <span class="cm"># composition</span>
+        <span class="se">self</span>.gps     <span class="op">=</span> <span class="cls">GPS</span>()          <span class="cm"># composition</span>
+
+    <span class="kw">def</span> <span class="fn">start_trip</span>(<span class="se">self</span>, destination):
+        <span class="bi">print</span>(<span class="st">f"=== {self.brand} Trip ==="</span>)
+        <span class="bi">print</span>(<span class="se">self</span>.battery.status())
+        <span class="bi">print</span>(<span class="se">self</span>.motor.start())
+        <span class="bi">print</span>(<span class="se">self</span>.gps.navigate(destination))
+
+tesla <span class="op">=</span> <span class="cls">ElectricCar</span>(<span class="st">"Tesla Model S"</span>)
+tesla.start_trip(<span class="st">"Chennai Central"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">=== Tesla Model S Trip ===
+Battery 82kWh — 100% charged
+⚡ Electric motor (670hp) started silently!
+🗺️ Navigating to Chennai Central...</div></div>
+    </div>
+  </div>
+
+  <!-- INNER CLASSES -->
+  <div class="topic" id="inner">
+    <div class="topic-head">
+      <div class="topic-icon teal">📦</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 1.13</div>
+        <h3>Inner Classes (Nested Classes)</h3>
+        <div class="topic-desc">Defining a class inside another class to group related functionality tightly.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box teal-border">
+        <div class="def-label" style="color:var(--teal)">📖 DEFINITION</div>
+        <p>An <strong>inner class</strong> (also called a <strong>nested class</strong>) is a class defined <strong>inside the body of another class</strong>. It is used when one class is closely related to another and doesn't make sense to exist independently. The outer class can create instances of the inner class.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Inner Class</span></div>
+<pre><span class="kw">class</span> <span class="cls">School</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name):
+        <span class="se">self</span>.name     <span class="op">=</span> name
+        <span class="se">self</span>.students <span class="op">=</span> []
+
+    <span class="cm"># Inner class — only meaningful inside School</span>
+    <span class="kw">class</span> <span class="cls">Student</span>:
+        <span class="kw">def</span> <span class="fn">__init__</span>(<span class="se">self</span>, name, roll):
+            <span class="se">self</span>.name <span class="op">=</span> name
+            <span class="se">self</span>.roll <span class="op">=</span> roll
+
+        <span class="kw">def</span> <span class="fn">info</span>(<span class="se">self</span>):
+            <span class="kw">return</span> <span class="st">f"Roll {self.roll}: {self.name}"</span>
+
+    <span class="kw">def</span> <span class="fn">admit</span>(<span class="se">self</span>, name, roll):
+        <span class="cm"># Outer class creates inner class object</span>
+        s <span class="op">=</span> <span class="cls">School</span>.<span class="cls">Student</span>(name, roll)
+        <span class="se">self</span>.students.append(s)
+
+    <span class="kw">def</span> <span class="fn">roster</span>(<span class="se">self</span>):
+        <span class="bi">print</span>(<span class="st">f"=== {self.name} Student Roster ==="</span>)
+        <span class="kw">for</span> s <span class="kw">in</span> <span class="se">self</span>.students:
+            <span class="bi">print</span>(<span class="st">"  "</span>, s.info())
+
+sc <span class="op">=</span> <span class="cls">School</span>(<span class="st">"Python Academy"</span>)
+sc.admit(<span class="st">"Arun"</span>, <span class="nm">101</span>)
+sc.admit(<span class="st">"Priya"</span>, <span class="nm">102</span>)
+sc.admit(<span class="st">"Karthik"</span>, <span class="nm">103</span>)
+sc.roster()</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">=== Python Academy Student Roster ===
+   Roll 101: Arun
+   Roll 102: Priya
+   Roll 103: Karthik</div></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       CHAPTER 2: FILE HANDLING
+  ════════════════════════════════ -->
+  <div class="chapter-header ch2" id="fh-intro">
+    <div class="chapter-num">CHAPTER 02</div>
+    <h2>File Handling in Python</h2>
+    <p>Reading, writing, and managing files on disk — a core skill for any Python developer.</p>
+  </div>
+
+  <!-- WHAT IS FILE HANDLING -->
+  <div class="topic">
+    <div class="topic-head">
+      <div class="topic-icon blue">📁</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.0</div>
+        <h3>What is File Handling?</h3>
+        <div class="topic-desc">Understanding how Python interacts with the file system.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p><strong>File handling</strong> is the ability to create, open, read, write, append, and delete files on a computer's disk using Python. Files allow programs to <strong>persist data</strong> (save data that survives after the program ends). Python's built-in <code>open()</code> function is the gateway to all file operations.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">persist data</div><div class="meaning">Save data to disk so it survives after the program ends.</div></div>
+        <div class="term-card highlight"><div class="term">file object / file handle</div><div class="meaning">The object returned by open(). Used to perform read/write operations.</div></div>
+        <div class="term-card highlight"><div class="term">text file</div><div class="meaning">A file containing human-readable characters (.txt, .csv, .json, .py).</div></div>
+        <div class="term-card highlight"><div class="term">binary file</div><div class="meaning">A file with raw bytes — not human-readable (.jpg, .mp3, .pdf, .exe).</div></div>
+        <div class="term-card highlight"><div class="term">open()</div><div class="meaning">Built-in function to open a file. Returns a file object.</div></div>
+        <div class="term-card highlight"><div class="term">close()</div><div class="meaning">Closes the file and releases system resources. Always close after opening.</div></div>
+      </div>
+
+      <div class="sub-label">Syntax of open()</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — open() syntax</span></div>
+<pre><span class="cm"># Syntax:</span>
+<span class="cm"># file_object = open(filename, mode, encoding)</span>
+
+<span class="cm"># Example:</span>
+f <span class="op">=</span> <span class="bi">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)
+<span class="cm"># ... do something ...</span>
+f.close()    <span class="cm"># must close manually</span>
+
+<span class="cm"># Better way — 'with' statement (auto-closes)</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.txt"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    content <span class="op">=</span> f.read()
+<span class="cm"># file is automatically closed here</span></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILE MODES -->
+  <div class="topic" id="fh-modes">
+    <div class="topic-head">
+      <div class="topic-icon indigo">🔑</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.1</div>
+        <h3>File Open Modes</h3>
+        <div class="topic-desc">Understanding what each mode does when you open a file.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p>The <strong>mode</strong> parameter in <code>open()</code> tells Python <strong>how to open the file</strong> — whether to read it, write to it, create it, etc. Using the wrong mode can destroy your data, so always choose carefully.</p>
+      </div>
+
+      <table class="ref-table">
+        <thead><tr><th>Mode</th><th>Name</th><th>File must exist?</th><th>Creates file?</th><th>Behaviour</th></tr></thead>
+        <tbody>
+          <tr><td class="mode-r">'r'</td><td>Read</td><td>Yes — error if not</td><td>No</td><td>Read from the beginning. Default mode.</td></tr>
+          <tr><td class="mode-w">'w'</td><td>Write</td><td>No</td><td>Yes</td><td>⚠️ Overwrites entire file! Creates if not exists.</td></tr>
+          <tr><td class="mode-a">'a'</td><td>Append</td><td>No</td><td>Yes</td><td>Adds to end of file. Creates if not exists.</td></tr>
+          <tr><td class="mode-x">'x'</td><td>Exclusive Create</td><td>Must NOT exist</td><td>Yes</td><td>Creates new file. Error if file already exists.</td></tr>
+          <tr><td>'r+'</td><td>Read+Write</td><td>Yes</td><td>No</td><td>Read and write. File must exist.</td></tr>
+          <tr><td>'w+'</td><td>Write+Read</td><td>No</td><td>Yes</td><td>Read and write. Overwrites file!</td></tr>
+          <tr><td class="mode-b">'rb'</td><td>Binary Read</td><td>Yes</td><td>No</td><td>Read file as raw bytes (for images, audio, etc.)</td></tr>
+          <tr><td class="mode-b">'wb'</td><td>Binary Write</td><td>No</td><td>Yes</td><td>Write raw bytes to file.</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warn-box"><span class="ni" style="flex-shrink:0">⚠️</span><p><strong>Warning:</strong> Opening with <code>'w'</code> mode <strong>deletes all existing content</strong> in the file immediately, even before you write anything new. Use <code>'a'</code> if you want to keep the existing content and add more.</p></div>
+    </div>
+  </div>
+
+  <!-- WRITING FILES -->
+  <div class="topic" id="fh-write">
+    <div class="topic-head">
+      <div class="topic-icon amber">✍️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.2</div>
+        <h3>Writing to Files</h3>
+        <div class="topic-desc">Creating files and writing text content using write() and writelines().</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">write(string)</div><div class="meaning">Writes a single string to the file. Does NOT add newline automatically.</div></div>
+        <div class="term-card"><div class="term">writelines(list)</div><div class="meaning">Writes a list of strings. Does NOT add newlines between items automatically.</div></div>
+        <div class="term-card"><div class="term">\n</div><div class="meaning">Newline escape character. Add it manually at the end of each line.</div></div>
+        <div class="term-card"><div class="term">encoding</div><div class="meaning">Character set used to encode the file. Use 'utf-8' for universal support (handles Hindi, Tamil, etc.)</div></div>
+      </div>
+
+      <div class="sub-label">Example 1 — write() method</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="cm"># write() — write a single string</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"notes.txt"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"Welcome to Python File Handling!\n"</span>)
+    f.write(<span class="st">"This is line 2.\n"</span>)
+    f.write(<span class="st">"Python makes file handling easy.\n"</span>)
+
+<span class="bi">print</span>(<span class="st">"✅ File written successfully!"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT (terminal)</div><div class="out-body">✅ File written successfully!</div></div>
+
+      <div class="sub-label">Example 2 — writelines() method</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="cm"># writelines() — write a list of strings</span>
+students <span class="op">=</span> [
+    <span class="st">"1. Arun Kumar\n"</span>,
+    <span class="st">"2. Priya Devi\n"</span>,
+    <span class="st">"3. Karthik Raja\n"</span>,
+    <span class="st">"4. Meena Kumari\n"</span>
+]
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"students.txt"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    f.writelines(students)   <span class="cm"># writes all at once</span>
+
+<span class="bi">print</span>(<span class="st">"Student list saved!"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT (terminal)</div><div class="out-body">Student list saved!</div></div>
+
+      <div class="tip-box"><span class="ni" style="flex-shrink:0">✅</span><p><strong>File contents of students.txt:</strong><br>1. Arun Kumar<br>2. Priya Devi<br>3. Karthik Raja<br>4. Meena Kumari</p></div>
+    </div>
+  </div>
+
+  <!-- READING FILES -->
+  <div class="topic" id="fh-read">
+    <div class="topic-head">
+      <div class="topic-icon green">📖</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.3</div>
+        <h3>Reading Files</h3>
+        <div class="topic-desc">Three methods to read file content — all at once, line by line, or into a list.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <table class="ref-table">
+        <thead><tr><th>Method</th><th>Returns</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>read()</td><td>Entire file as one string</td><td>Small files you want to process as a whole</td></tr>
+          <tr><td>read(n)</td><td>Next n characters as string</td><td>Reading fixed-size chunks</td></tr>
+          <tr><td>readline()</td><td>One line as string (including \n)</td><td>Reading one line at a time</td></tr>
+          <tr><td>readlines()</td><td>List of all lines</td><td>When you need all lines as a list</td></tr>
+          <tr><td>for line in f</td><td>One line per iteration</td><td>Large files — memory efficient</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — All reading methods</span></div>
+<pre><span class="cm"># First, create a sample file</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"sample.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"Line 1: Python\n"</span>)
+    f.write(<span class="st">"Line 2: Java\n"</span>)
+    f.write(<span class="st">"Line 3: C++\n"</span>)
+
+<span class="cm"># Method 1: read() — entire file as string</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"sample.txt"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    content <span class="op">=</span> f.read()
+    <span class="bi">print</span>(<span class="st">"read():"</span>, <span class="bi">repr</span>(content))
+
+<span class="cm"># Method 2: readline() — one line at a time</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"sample.txt"</span>) <span class="kw">as</span> f:
+    <span class="bi">print</span>(<span class="st">"readline():"</span>, f.readline().strip())
+    <span class="bi">print</span>(<span class="st">"readline():"</span>, f.readline().strip())
+
+<span class="cm"># Method 3: readlines() — list of all lines</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"sample.txt"</span>) <span class="kw">as</span> f:
+    lines <span class="op">=</span> f.readlines()
+    <span class="bi">print</span>(<span class="st">"readlines():"</span>, lines)
+
+<span class="cm"># Method 4: for loop — memory-efficient, best for large files</span>
+<span class="bi">print</span>(<span class="st">"--- Line by line ---"</span>)
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"sample.txt"</span>) <span class="kw">as</span> f:
+    <span class="kw">for</span> i, line <span class="kw">in</span> <span class="bi">enumerate</span>(f, <span class="nm">1</span>):
+        <span class="bi">print</span>(<span class="st">f"Line {i}: {line.strip()}"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">read(): 'Line 1: Python\nLine 2: Java\nLine 3: C++\n'
+readline(): Line 1: Python
+readline(): Line 2: Java
+readlines(): ['Line 1: Python\n', 'Line 2: Java\n', 'Line 3: C++\n']
+--- Line by line ---
+Line 1: Line 1: Python
+Line 2: Line 2: Java
+Line 3: Line 3: C++</div></div>
+
+      <div class="note-box"><span class="ni">💡</span><p><strong>strip()</strong> removes leading and trailing whitespace (including <code>\n</code> newlines) from a string. Always use it when printing lines read from a file.</p></div>
+    </div>
+  </div>
+
+  <!-- APPEND -->
+  <div class="topic" id="fh-append">
+    <div class="topic-head">
+      <div class="topic-icon violet">➕</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.4</div>
+        <h3>Append Mode</h3>
+        <div class="topic-desc">Add new content at the end of an existing file without losing original data.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p>Opening a file in <strong>append mode ('a')</strong> moves the cursor to the <strong>end of the file</strong> before writing. All new content is added after existing content. This is perfect for <strong>log files</strong> where you keep adding new entries over time.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Append Mode (Log File)</span></div>
+<pre><span class="kw">import</span> datetime
+
+<span class="kw">def</span> <span class="fn">log_event</span>(message):
+    <span class="st">"""Append a timestamped message to a log file."""</span>
+    timestamp <span class="op">=</span> datetime.datetime.now().strftime(<span class="st">"%Y-%m-%d %H:%M:%S"</span>)
+    <span class="kw">with</span> <span class="bi">open</span>(<span class="st">"app.log"</span>, <span class="st">"a"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+        f.write(<span class="st">f"[{timestamp}] {message}\n"</span>)
+
+<span class="cm"># Simulate 3 events</span>
+<span class="fn">log_event</span>(<span class="st">"App started"</span>)
+<span class="fn">log_event</span>(<span class="st">"User 'Arun' logged in"</span>)
+<span class="fn">log_event</span>(<span class="st">"Database connection established"</span>)
+
+<span class="cm"># Read back the log</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"app.log"</span>) <span class="kw">as</span> f:
+    <span class="bi">print</span>(f.read())</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">[2025-01-15 10:30:01] App started
+[2025-01-15 10:30:01] User 'Arun' logged in
+[2025-01-15 10:30:01] Database connection established</div></div>
+    </div>
+  </div>
+
+  <!-- SEEK & TELL -->
+  <div class="topic" id="fh-seek">
+    <div class="topic-head">
+      <div class="topic-icon amber">📍</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.5</div>
+        <h3>seek() and tell() — File Cursor</h3>
+        <div class="topic-desc">Navigate to any position in a file using the internal file cursor.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box amber-border">
+        <div class="def-label" style="color:var(--amber)">📖 DEFINITION</div>
+        <p>Every open file has an internal <strong>cursor</strong> (like a reading pointer) that tracks the current position in bytes. <code>tell()</code> returns the current position. <code>seek(n)</code> moves the cursor to byte position <code>n</code>. This lets you re-read or jump to specific parts of a file.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">cursor / file pointer</div><div class="meaning">Internal marker that tracks where the next read/write will happen in the file.</div></div>
+        <div class="term-card"><div class="term">tell()</div><div class="meaning">Returns the current cursor position as a byte offset from the start.</div></div>
+        <div class="term-card"><div class="term">seek(n)</div><div class="meaning">Moves cursor to byte position n. seek(0) goes back to the beginning.</div></div>
+        <div class="term-card"><div class="term">byte offset</div><div class="meaning">Position measured in bytes from the beginning of the file.</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — seek() and tell()</span></div>
+<pre><span class="cm"># Create a sample file</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"test.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> f:
+    f.write(<span class="st">"Hello World!\nPython is fun!"</span>)
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"test.txt"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    <span class="bi">print</span>(<span class="st">"Position:"</span>, f.tell())     <span class="cm"># 0 (start)</span>
+
+    first <span class="op">=</span> f.read(<span class="nm">5</span>)               <span class="cm"># read 5 chars</span>
+    <span class="bi">print</span>(<span class="st">"Read 5 chars:"</span>, first)    <span class="cm"># 'Hello'</span>
+    <span class="bi">print</span>(<span class="st">"Position now:"</span>, f.tell())  <span class="cm"># 5</span>
+
+    f.seek(<span class="nm">0</span>)                        <span class="cm"># go back to start</span>
+    <span class="bi">print</span>(<span class="st">"After seek(0):"</span>, f.tell())
+
+    line1 <span class="op">=</span> f.readline()
+    <span class="bi">print</span>(<span class="st">"Line 1:"</span>, line1.strip())
+
+    <span class="bi">print</span>(<span class="st">"Position after line1:"</span>, f.tell())
+
+    f.seek(<span class="nm">0</span>)                        <span class="cm"># rewind again</span>
+    full <span class="op">=</span> f.read()
+    <span class="bi">print</span>(<span class="st">"Full file:\n"</span>, full)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Position: 0
+Read 5 chars: Hello
+Position now: 5
+After seek(0): 0
+Line 1: Hello World!
+Position after line1: 13
+Full file:
+ Hello World!
+Python is fun!</div></div>
+    </div>
+  </div>
+
+  <!-- WITH STATEMENT -->
+  <div class="topic" id="fh-with">
+    <div class="topic-head">
+      <div class="topic-icon teal">🛡️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.6</div>
+        <h3>The <code>with</code> Statement (Context Manager)</h3>
+        <div class="topic-desc">The safest way to open files — automatically handles closing even if an error occurs.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box teal-border">
+        <div class="def-label" style="color:var(--teal)">📖 DEFINITION</div>
+        <p>The <strong><code>with</code></strong> statement creates a <strong>context manager</strong> that ensures the file is <strong>automatically closed</strong> when the block ends — even if an exception (error) occurs inside. This prevents <strong>resource leaks</strong> (unclosed files consuming memory).</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card highlight"><div class="term">context manager</div><div class="meaning">An object that manages resources — sets them up (open) and cleans up (close) automatically.</div></div>
+        <div class="term-card highlight"><div class="term">resource leak</div><div class="meaning">When a program forgets to close files/connections, wasting system memory and limits.</div></div>
+        <div class="term-card highlight"><div class="term">with...as</div><div class="meaning">Opens the file and assigns the file object to the variable after 'as'.</div></div>
+        <div class="term-card highlight"><div class="term">__enter__ / __exit__</div><div class="meaning">Dunder methods that power context managers. with calls these automatically.</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — with vs without</span></div>
+<pre><span class="cm"># ❌ WITHOUT 'with' — risky (what if error occurs before close?)</span>
+f <span class="op">=</span> <span class="bi">open</span>(<span class="st">"notes.txt"</span>, <span class="st">"r"</span>)
+data <span class="op">=</span> f.read()
+<span class="cm"># if error here, f.close() never runs!</span>
+f.close()
+
+<span class="cm"># ✅ WITH 'with' — safe, auto-closes always</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"notes.txt"</span>, <span class="st">"r"</span>) <span class="kw">as</span> f:
+    data <span class="op">=</span> f.read()
+<span class="cm"># file is closed HERE automatically</span>
+<span class="bi">print</span>(<span class="st">"File closed?"</span>, f.closed)   <span class="cm"># True</span>
+
+<span class="cm"># Open multiple files at once with 'with'</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"input.txt"</span>, <span class="st">"r"</span>) <span class="kw">as</span> src, \
+     <span class="bi">open</span>(<span class="st">"output.txt"</span>, <span class="st">"w"</span>) <span class="kw">as</span> dst:
+    <span class="kw">for</span> line <span class="kw">in</span> src:
+        dst.write(line.upper())   <span class="cm"># copy file in UPPERCASE</span>
+<span class="bi">print</span>(<span class="st">"Copied in uppercase ✅"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">File closed? True
+Copied in uppercase ✅</div></div>
+    </div>
+  </div>
+
+  <!-- EXCEPTION HANDLING -->
+  <div class="topic" id="fh-exception">
+    <div class="topic-head">
+      <div class="topic-icon rose">⚡</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.7</div>
+        <h3>Exception Handling in File I/O</h3>
+        <div class="topic-desc">Gracefully handle errors using try-except-finally blocks.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box rose-border">
+        <div class="def-label" style="color:var(--red)">📖 DEFINITION</div>
+        <p>File operations can fail — the file might not exist, you might not have permission to read it, or the disk might be full. <strong>Exception handling</strong> using <code>try-except-finally</code> lets your program handle these errors <strong>gracefully</strong> instead of crashing.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">exception</div><div class="meaning">An error that occurs during program execution, disrupting normal flow.</div></div>
+        <div class="term-card"><div class="term">try</div><div class="meaning">Block where risky code goes. Python "tries" to run it.</div></div>
+        <div class="term-card"><div class="term">except</div><div class="meaning">Runs if an exception occurs in the try block. Catches and handles the error.</div></div>
+        <div class="term-card"><div class="term">finally</div><div class="meaning">Always runs — whether exception occurred or not. Used for cleanup.</div></div>
+        <div class="term-card"><div class="term">FileNotFoundError</div><div class="meaning">Raised when open() cannot find the specified file.</div></div>
+        <div class="term-card"><div class="term">PermissionError</div><div class="meaning">Raised when you don't have rights to read/write the file.</div></div>
+        <div class="term-card"><div class="term">IOError / OSError</div><div class="meaning">General I/O error. OSError is the base class for file-related errors.</div></div>
+        <div class="term-card"><div class="term">gracefully</div><div class="meaning">Handling errors smoothly without crashing — showing a helpful message instead.</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Full Exception Handling</span></div>
+<pre><span class="kw">def</span> <span class="fn">read_file_safe</span>(filename):
+    <span class="st">"""Read a file safely with full error handling."""</span>
+    f <span class="op">=</span> <span class="kw">None</span>
+    <span class="kw">try</span>:
+        f <span class="op">=</span> <span class="bi">open</span>(filename, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)
+        content <span class="op">=</span> f.read()
+        <span class="bi">print</span>(<span class="st">f"✅ File read successfully!"</span>)
+        <span class="kw">return</span> content
+
+    <span class="kw">except</span> <span class="bi">FileNotFoundError</span>:
+        <span class="bi">print</span>(<span class="st">f"❌ Error: '{filename}' not found."</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="kw">except</span> <span class="bi">PermissionError</span>:
+        <span class="bi">print</span>(<span class="st">f"❌ Error: No permission to read '{filename}'."</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="kw">except</span> <span class="bi">UnicodeDecodeError</span>:
+        <span class="bi">print</span>(<span class="st">f"❌ Error: Cannot decode '{filename}'. Try binary mode."</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="kw">except</span> <span class="bi">OSError</span> <span class="kw">as</span> e:
+        <span class="bi">print</span>(<span class="st">f"❌ OS Error: {e}"</span>)
+        <span class="kw">return</span> <span class="kw">None</span>
+
+    <span class="kw">finally</span>:
+        <span class="cm"># always runs — clean up resources</span>
+        <span class="kw">if</span> f <span class="kw">and</span> <span class="kw">not</span> f.closed:
+            f.close()
+        <span class="bi">print</span>(<span class="st">f"[finally] Cleanup done for: {filename}"</span>)
+
+<span class="cm"># Test with valid and invalid files</span>
+data <span class="op">=</span> <span class="fn">read_file_safe</span>(<span class="st">"notes.txt"</span>)   <span class="cm"># exists</span>
+<span class="bi">print</span>()
+data <span class="op">=</span> <span class="fn">read_file_safe</span>(<span class="st">"ghost.txt"</span>)   <span class="cm"># doesn't exist</span></pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">✅ File read successfully!
+[finally] Cleanup done for: notes.txt
+
+❌ Error: 'ghost.txt' not found.
+[finally] Cleanup done for: ghost.txt</div></div>
+    </div>
+  </div>
+
+  <!-- BINARY FILES -->
+  <div class="topic" id="fh-binary">
+    <div class="topic-head">
+      <div class="topic-icon violet">🔢</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.8</div>
+        <h3>Binary File I/O</h3>
+        <div class="topic-desc">Reading and writing non-text files like images and audio as raw bytes.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p><strong>Binary files</strong> store data as raw bytes, not readable text. Images (.jpg, .png), audio (.mp3), PDFs, and executable files (.exe) are all binary. Use mode <code>'rb'</code> to read and <code>'wb'</code> to write binary files.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">bytes</div><div class="meaning">The basic unit of data in binary files. Python's bytes type stores raw byte sequences.</div></div>
+        <div class="term-card"><div class="term">b'...'</div><div class="meaning">A bytes literal in Python. E.g., b'Hello' is the bytes version of the string 'Hello'.</div></div>
+        <div class="term-card"><div class="term">'rb' mode</div><div class="meaning">Read Binary — opens file for reading raw bytes.</div></div>
+        <div class="term-card"><div class="term">'wb' mode</div><div class="meaning">Write Binary — opens file for writing raw bytes.</div></div>
+        <div class="term-card"><div class="term">encode()</div><div class="meaning">Convert string to bytes. e.g., "hello".encode("utf-8")</div></div>
+        <div class="term-card"><div class="term">decode()</div><div class="meaning">Convert bytes back to string. e.g., b"hello".decode("utf-8")</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — Binary Files</span></div>
+<pre><span class="cm"># Write binary data</span>
+data <span class="op">=</span> <span class="kw">bytes</span>([<span class="nm">80</span>, <span class="nm">121</span>, <span class="nm">116</span>, <span class="nm">104</span>, <span class="nm">111</span>, <span class="nm">110</span>])  <span class="cm"># "Python" in ASCII</span>
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.bin"</span>, <span class="st">"wb"</span>) <span class="kw">as</span> f:
+    f.write(data)
+<span class="bi">print</span>(<span class="st">"Binary file written ✅"</span>)
+
+<span class="cm"># Read binary data</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"data.bin"</span>, <span class="st">"rb"</span>) <span class="kw">as</span> f:
+    raw <span class="op">=</span> f.read()
+    <span class="bi">print</span>(<span class="st">"Raw bytes :"</span>, raw)
+    <span class="bi">print</span>(<span class="st">"As string :"</span>, raw.decode(<span class="st">"utf-8"</span>))
+    <span class="bi">print</span>(<span class="st">"As int list:"</span>, <span class="bi">list</span>(raw))
+
+<span class="cm"># Practical: Binary file copy (works for ANY file type)</span>
+<span class="kw">def</span> <span class="fn">copy_file</span>(source, destination):
+    <span class="kw">with</span> <span class="bi">open</span>(source, <span class="st">"rb"</span>) <span class="kw">as</span> src:
+        <span class="kw">with</span> <span class="bi">open</span>(destination, <span class="st">"wb"</span>) <span class="kw">as</span> dst:
+            <span class="kw">while</span> <span class="kw">True</span>:
+                chunk <span class="op">=</span> src.read(<span class="nm">4096</span>)   <span class="cm"># read 4KB at a time</span>
+                <span class="kw">if</span> <span class="kw">not</span> chunk:
+                    <span class="kw">break</span>
+                dst.write(chunk)
+    <span class="bi">print</span>(<span class="st">f"Copied: {source} → {destination}"</span>)
+
+<span class="fn">copy_file</span>(<span class="st">"data.bin"</span>, <span class="st">"data_backup.bin"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Binary file written ✅
+Raw bytes : b'Python'
+As string : Python
+As int list: [80, 121, 116, 104, 111, 110]
+Copied: data.bin → data_backup.bin</div></div>
+    </div>
+  </div>
+
+  <!-- CSV FILES -->
+  <div class="topic" id="fh-csv">
+    <div class="topic-head">
+      <div class="topic-icon green">📊</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.9</div>
+        <h3>CSV File Handling</h3>
+        <div class="topic-desc">Reading and writing comma-separated values — the most common data exchange format.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box green-border">
+        <div class="def-label" style="color:var(--green)">📖 DEFINITION</div>
+        <p>A <strong>CSV (Comma-Separated Values)</strong> file stores tabular data as plain text where each row is a line and each column value is separated by a comma. It's supported by Excel, Google Sheets, and most databases. Python's built-in <code>csv</code> module makes reading/writing CSVs easy.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">csv module</div><div class="meaning">Python's built-in module for reading and writing CSV files.</div></div>
+        <div class="term-card"><div class="term">csv.writer</div><div class="meaning">Object to write rows to a CSV file using writerow() or writerows().</div></div>
+        <div class="term-card"><div class="term">csv.reader</div><div class="meaning">Iterator that reads rows from a CSV file as lists.</div></div>
+        <div class="term-card"><div class="term">csv.DictWriter</div><div class="meaning">Writes rows as dictionaries — uses field names as headers.</div></div>
+        <div class="term-card"><div class="term">csv.DictReader</div><div class="meaning">Reads rows as dictionaries — header row becomes keys.</div></div>
+        <div class="term-card"><div class="term">newline=""</div><div class="meaning">Required when opening CSV files on Windows to prevent extra blank lines.</div></div>
+        <div class="term-card"><div class="term">delimiter</div><div class="meaning">Character that separates values. Default is comma. Can change to ';' or '\t'.</div></div>
+        <div class="term-card"><div class="term">fieldnames</div><div class="meaning">List of column header names for DictWriter.</div></div>
+      </div>
+
+      <div class="sub-label">Example 1 — csv.writer and csv.reader</div>
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python</span></div>
+<pre><span class="kw">import</span> csv
+
+<span class="cm"># Write CSV</span>
+marks <span class="op">=</span> [
+    [<span class="st">"Name"</span>, <span class="st">"Maths"</span>, <span class="st">"Science"</span>, <span class="st">"English"</span>],
+    [<span class="st">"Arun"</span>, <span class="nm">90</span>, <span class="nm">85</span>, <span class="nm">78</span>],
+    [<span class="st">"Priya"</span>, <span class="nm">95</span>, <span class="nm">92</span>, <span class="nm">88</span>],
+    [<span class="st">"Karthik"</span>, <span class="nm">72</span>, <span class="nm">68</span>, <span class="nm">80</span>],
+]
+
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"marks.csv"</span>, <span class="st">"w"</span>, newline<span class="op">=</span><span class="st">""</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    writer <span class="op">=</span> csv.writer(f)
+    writer.writerows(marks)
+<span class="bi">print</span>(<span class="st">"CSV written ✅"</span>)
+
+<span class="cm"># Read CSV using DictReader (header row = keys)</span>
+<span class="bi">print</span>(<span class="st">"\n--- Mark Sheet ---"</span>)
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"marks.csv"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    reader <span class="op">=</span> csv.DictReader(f)
+    <span class="kw">for</span> row <span class="kw">in</span> reader:
+        total <span class="op">=</span> <span class="bi">int</span>(row[<span class="st">"Maths"</span>]) <span class="op">+</span> <span class="bi">int</span>(row[<span class="st">"Science"</span>]) <span class="op">+</span> <span class="bi">int</span>(row[<span class="st">"English"</span>])
+        <span class="bi">print</span>(<span class="st">f"{row['Name']:10} Total: {total}/300"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">CSV written ✅
+
+--- Mark Sheet ---
+Arun       Total: 253/300
+Priya      Total: 275/300
+Karthik    Total: 220/300</div></div>
+    </div>
+  </div>
+
+  <!-- JSON FILES -->
+  <div class="topic" id="fh-json">
+    <div class="topic-head">
+      <div class="topic-icon sky">🗂️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.10</div>
+        <h3>JSON File Handling</h3>
+        <div class="topic-desc">Saving and loading structured data using the universal JSON format.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box">
+        <div class="def-label">📖 DEFINITION</div>
+        <p><strong>JSON (JavaScript Object Notation)</strong> is a lightweight text format for storing and exchanging structured data. Python dictionaries and lists can be directly converted to JSON. JSON files are widely used for <strong>configuration files</strong>, <strong>API responses</strong>, and <strong>data storage</strong>.</p>
+      </div>
+
+      <div class="terms-grid">
+        <div class="term-card"><div class="term">json module</div><div class="meaning">Python's built-in module to work with JSON data.</div></div>
+        <div class="term-card"><div class="term">json.dump(data, file)</div><div class="meaning">Serialise Python object and write to file.</div></div>
+        <div class="term-card"><div class="term">json.load(file)</div><div class="meaning">Read JSON file and deserialise to Python object.</div></div>
+        <div class="term-card"><div class="term">json.dumps(data)</div><div class="meaning">Serialise to JSON string (not file). 's' = string.</div></div>
+        <div class="term-card"><div class="term">json.loads(string)</div><div class="meaning">Parse JSON string to Python object. 's' = string.</div></div>
+        <div class="term-card"><div class="term">serialise / serialize</div><div class="meaning">Convert Python object → JSON format (for storage/transfer).</div></div>
+        <div class="term-card"><div class="term">deserialise / deserialize</div><div class="meaning">Convert JSON format → Python object (for use in program).</div></div>
+        <div class="term-card"><div class="term">indent</div><div class="meaning">Parameter in dump/dumps that pretty-prints JSON with indentation.</div></div>
+      </div>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — JSON File Operations</span></div>
+<pre><span class="kw">import</span> json
+
+<span class="cm"># Python dictionary → JSON file</span>
+student_data <span class="op">=</span> {
+    <span class="st">"name"</span>: <span class="st">"Arun Kumar"</span>,
+    <span class="st">"age"</span>: <span class="nm">20</span>,
+    <span class="st">"courses"</span>: [<span class="st">"Python"</span>, <span class="st">"Data Science"</span>, <span class="st">"Machine Learning"</span>],
+    <span class="st">"scores"</span>: {<span class="st">"Python"</span>: <span class="nm">92</span>, <span class="st">"Maths"</span>: <span class="nm">88</span>},
+    <span class="st">"active"</span>: <span class="kw">True</span>
+}
+
+<span class="cm"># SAVE: Write dict to JSON file</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"student.json"</span>, <span class="st">"w"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    json.dump(student_data, f, indent<span class="op">=</span><span class="nm">4</span>)  <span class="cm"># indent=4 for pretty printing</span>
+<span class="bi">print</span>(<span class="st">"Saved to student.json ✅"</span>)
+
+<span class="cm"># LOAD: Read JSON file → dict</span>
+<span class="kw">with</span> <span class="bi">open</span>(<span class="st">"student.json"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="kw">as</span> f:
+    loaded <span class="op">=</span> json.load(f)
+
+<span class="bi">print</span>(<span class="st">"\nLoaded data:"</span>)
+<span class="bi">print</span>(<span class="st">f"Name   : {loaded['name']}"</span>)
+<span class="bi">print</span>(<span class="st">f"Age    : {loaded['age']}"</span>)
+<span class="bi">print</span>(<span class="st">f"Courses: {', '.join(loaded['courses'])}"</span>)
+<span class="bi">print</span>(<span class="st">f"Python score: {loaded['scores']['Python']}"</span>)
+
+<span class="cm"># json.dumps() → JSON string (not file)</span>
+json_str <span class="op">=</span> json.dumps(student_data, indent<span class="op">=</span><span class="nm">2</span>)
+<span class="bi">print</span>(<span class="st">"\nJSON String (first 80 chars):"</span>)
+<span class="bi">print</span>(json_str[:<span class="nm">80</span>])</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Saved to student.json ✅
+
+Loaded data:
+Name   : Arun Kumar
+Age    : 20
+Courses: Python, Data Science, Machine Learning
+Python score: 92
+
+JSON String (first 80 chars):
+{
+  "name": "Arun Kumar",
+  "age": 20,
+  "courses": [
+    "Python",</div></div>
+    </div>
+  </div>
+
+  <!-- OS & PATHLIB -->
+  <div class="topic" id="fh-os">
+    <div class="topic-head">
+      <div class="topic-icon amber">🗄️</div>
+      <div class="topic-head-text">
+        <div class="topic-num">TOPIC 2.11</div>
+        <h3>File System Operations — os &amp; pathlib</h3>
+        <div class="topic-desc">Check, rename, delete, and navigate the file system programmatically.</div>
+      </div>
+    </div>
+    <div class="topic-body">
+      <div class="def-box amber-border">
+        <div class="def-label" style="color:var(--amber)">📖 DEFINITION</div>
+        <p>The <strong><code>os</code></strong> module provides functions to interact with the operating system — check file existence, rename, delete, list directories, and more. The modern <strong><code>pathlib</code></strong> module provides the same functionality in an object-oriented, cross-platform style (recommended for new code).</p>
+      </div>
+
+      <table class="ref-table">
+        <thead><tr><th>os module</th><th>pathlib equivalent</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td>os.getcwd()</td><td>Path.cwd()</td><td>Get current working directory</td></tr>
+          <tr><td>os.path.exists(path)</td><td>Path(path).exists()</td><td>Check if path exists</td></tr>
+          <tr><td>os.path.isfile(path)</td><td>Path(path).is_file()</td><td>Check if it's a file</td></tr>
+          <tr><td>os.path.isdir(path)</td><td>Path(path).is_dir()</td><td>Check if it's a directory</td></tr>
+          <tr><td>os.rename(src, dst)</td><td>Path(src).rename(dst)</td><td>Rename or move a file</td></tr>
+          <tr><td>os.remove(path)</td><td>Path(path).unlink()</td><td>Delete a file</td></tr>
+          <tr><td>os.makedirs(path)</td><td>Path(path).mkdir(parents=True)</td><td>Create directory tree</td></tr>
+          <tr><td>os.listdir(path)</td><td>Path(path).iterdir()</td><td>List directory contents</td></tr>
+          <tr><td>os.path.getsize(path)</td><td>Path(path).stat().st_size</td><td>Get file size in bytes</td></tr>
+        </tbody>
+      </table>
+
+      <div class="code-block">
+        <div class="code-top"><div class="dots"><span class="dot dr"></span><span class="dot dy"></span><span class="dot dg"></span></div><span class="code-tag">Python — os and pathlib</span></div>
+<pre><span class="kw">import</span> os
+<span class="kw">from</span> pathlib <span class="kw">import</span> Path
+
+<span class="cm"># ── os module operations ──</span>
+<span class="bi">print</span>(<span class="st">"Current dir:"</span>, os.getcwd())
+<span class="bi">print</span>(<span class="st">"File exists?"</span>, os.path.exists(<span class="st">"notes.txt"</span>))
+<span class="bi">print</span>(<span class="st">"Is file?"</span>, os.path.isfile(<span class="st">"notes.txt"</span>))
+<span class="bi">print</span>(<span class="st">"Size (bytes):"</span>, os.path.getsize(<span class="st">"notes.txt"</span>))
+
+<span class="cm"># Rename file</span>
+os.rename(<span class="st">"notes.txt"</span>, <span class="st">"notes_v2.txt"</span>)
+<span class="bi">print</span>(<span class="st">"Renamed ✅"</span>)
+
+<span class="cm"># List current directory</span>
+files <span class="op">=</span> os.listdir(<span class="st">"."</span>)
+<span class="bi">print</span>(<span class="st">"Files:"</span>, files[:<span class="nm">5</span>])
+
+<span class="cm"># ── pathlib (modern, OOP style) ──</span>
+p <span class="op">=</span> Path(<span class="st">"notes_v2.txt"</span>)
+<span class="bi">print</span>(<span class="st">"\n── pathlib ──"</span>)
+<span class="bi">print</span>(<span class="st">"Name:"</span>, p.name)            <span class="cm"># notes_v2.txt</span>
+<span class="bi">print</span>(<span class="st">"Stem:"</span>, p.stem)            <span class="cm"># notes_v2 (name without extension)</span>
+<span class="bi">print</span>(<span class="st">"Suffix:"</span>, p.suffix)        <span class="cm"># .txt</span>
+<span class="bi">print</span>(<span class="st">"Absolute:"</span>, p.resolve())   <span class="cm"># full path</span>
+<span class="bi">print</span>(<span class="st">"Size:"</span>, p.stat().st_size, <span class="st">"bytes"</span>)
+
+<span class="cm"># Create directory tree</span>
+Path(<span class="st">"projects/2025/python"</span>).mkdir(parents<span class="op">=</span><span class="kw">True</span>, exist_ok<span class="op">=</span><span class="kw">True</span>)
+<span class="bi">print</span>(<span class="st">"Directory created ✅"</span>)
+
+<span class="cm"># Write/read using pathlib (clean syntax)</span>
+p2 <span class="op">=</span> Path(<span class="st">"quick.txt"</span>)
+p2.write_text(<span class="st">"Hello from pathlib!"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>)
+<span class="bi">print</span>(p2.read_text())
+
+<span class="cm"># Delete file</span>
+p2.unlink()   <span class="cm"># delete</span>
+<span class="bi">print</span>(<span class="st">"Deleted ✅"</span>)</pre>
+      </div>
+      <div class="output"><div class="out-head">▶ OUTPUT</div><div class="out-body">Current dir: /home/user/python_project
+File exists? True
+Is file? True
+Size (bytes): 47
+Renamed ✅
+Files: ['marks.csv', 'student.json', 'notes_v2.txt', 'data.bin', 'app.log']
+
+── pathlib ──
+Name: notes_v2.txt
+Stem: notes_v2
+Suffix: .txt
+Absolute: /home/user/python_project/notes_v2.txt
+Size: 47 bytes
+Directory created ✅
+Hello from pathlib!
+Deleted ✅</div></div>
+
+      <div class="tip-box"><span class="ni" style="flex-shrink:0">✅</span><p><strong>Best Practice:</strong> Prefer <code>pathlib.Path</code> over <code>os.path</code> in new Python 3.6+ code. It's more readable, cross-platform (works on Windows and Linux without path separator issues), and object-oriented.</p></div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<script>
+// Highlight active sidebar link on scroll
+const sections = document.querySelectorAll('[id]');
+const links = document.querySelectorAll('.sidebar a');
+
+function updateActive() {
+  let current = '';
+  sections.forEach(s => {
+    const top = s.getBoundingClientRect().top;
+    if (top <= 120) current = s.id;
+  });
+  links.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+}
+window.addEventListener('scroll', updateActive);
+updateActive();
+</script>
+</body>
+</html>
